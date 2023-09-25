@@ -27,6 +27,7 @@
 		zsh
 		oh-my-zsh
 		bitwarden-cli
+		gitAndTools.gh
 	] ++ lib.optionals stdenv.isDarwin [
 		m-cli
 	];
@@ -78,6 +79,9 @@
 			enable = true;
 			settings = {
 				git_protocol = "ssh";
+				hosts = ["github.com"];
+				editor = "nvim";
+
 			};
 		};
 	};

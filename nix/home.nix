@@ -56,7 +56,11 @@
 				dracula-theme.theme-dracula
 				vscodevim.vim
 				yzhang.markdown-all-in-one
+				github.copilot
+				eamodio.gitlens
 			];
+			enableUpdateCheck = true;
+			enableExtensionUpdateCheck = true;
 		};
 		zsh = {
 			enable = true;

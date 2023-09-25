@@ -15,7 +15,6 @@
 		pkgs.neovim
 		pkgs.home-manager
 		pkgs.gh
-		pkgs.vscode
 	];
 
   nixpkgs.config.allowUnfree = true;

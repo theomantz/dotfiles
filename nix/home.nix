@@ -26,18 +26,13 @@
 		gh
 		zsh
 		oh-my-zsh
-		git-credential-manager
-		homebrew
+		bitwarden-cli
 	] ++ lib.optionals stdenv.isDarwin [
 		m-cli
 	];
 
+
 	programs = {
-		homebrew = {
-			enable = true;
-			taps = ["homebrew/casks-versions"];
-			casks = pkgs.callPackage ./casks.nix {};
-		};
 		git = {
 			enable = true;
 			userName = "theomantz";
@@ -81,6 +76,9 @@
 		};
 		gh = {
 			enable = true;
+			settings = {
+				git_protocol = "ssh";
+			};
 		};
 	};
 }

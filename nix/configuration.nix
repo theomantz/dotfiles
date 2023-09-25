@@ -15,13 +15,20 @@
 		pkgs.neovim
 		pkgs.home-manager
 		pkgs.gh
+		pkgs.vscode
 	];
 
+  nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePackages = ["vscode"];
   nixpkgs.hostPlatform = "x86_64-darwin";
 
   programs.nix-index.enable = true;
   programs.zsh.enable = true;
+
+  homebrew = {
+	enable = true;
+	casks = pkgs.callPackage ./casks.nix {};
+  };
 
   fonts = {
 	fontDir.enable = true;

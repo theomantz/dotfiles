@@ -49,7 +49,7 @@
 			enable = true;
 			userName = "theomantz";
 			userEmail = "theo@mantz.nyc";
-			ignores = [".DS_Store" "node_modules"];
+			ignores = [".DS_Store" "node_modules/" ".direnv/"];
 			extraConfig = {
 				credential.helper = "${
 					pkgs.git.override {withLibsecret = true;}
@@ -63,8 +63,6 @@
 		};
 		vscode = {
 			enable = true;
-			user = "theo";
-			homeDir = "/Users/theo/projects";
 			extensions = with pkgs.vscode-extensions; [
 				dracula-theme.theme-dracula
 				vscodevim.vim
@@ -72,7 +70,6 @@
 				github.copilot
 				eamodio.gitlens
 				bbenoist.nix
-				vscjava
 			];
 			enableUpdateCheck = false;
 			enableExtensionUpdateCheck = true;

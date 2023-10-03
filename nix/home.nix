@@ -28,7 +28,6 @@
 	];
 
 	nix = {
-		package = pkgs.nix;
 		settings.experimental-features = ["nix-command" "flakes"];
 	};
 
@@ -64,14 +63,18 @@
 		};
 		vscode = {
 			enable = true;
+			user = "theo";
+			homeDir = "/Users/theo/projects";
 			extensions = with pkgs.vscode-extensions; [
 				dracula-theme.theme-dracula
 				vscodevim.vim
 				yzhang.markdown-all-in-one
 				github.copilot
 				eamodio.gitlens
+				bbenoist.nix
+				vscjava
 			];
-			enableUpdateCheck = true;
+			enableUpdateCheck = false;
 			enableExtensionUpdateCheck = true;
 		};
 		zsh = {

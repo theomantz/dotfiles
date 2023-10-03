@@ -22,9 +22,10 @@
 			url = "github:homebrew/homebrew-cask-versions";
 			flake = false;
 		};
+		nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 	};
 
-	outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cask-versions }: {
+	outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cask-versions, nix-vscode-extensions }: {
 		darwinConfigurations.Theos-MacBook-Pro = darwin.lib.darwinSystem {
 				system = "x86_64-darwin";
 				modules = [ 

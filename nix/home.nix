@@ -73,7 +73,7 @@
 			];
 			enableUpdateCheck = false;
 			enableExtensionUpdateCheck = true;
-			userSettings = builtins.toJSON ./nix/vscode.nix;
+			userSettings = import ./nix/vscode.json;
 		};
 		zsh = {
 			enable = true;

@@ -15,9 +15,15 @@
 		pkgs.neovim
 		pkgs.home-manager
 		pkgs.gh
+		pkgs.spotify
+		pkgs.slack
+		pkgs.discord
+		pkgs.obsidian
+		pkgs.python3
 	];
 
   nixpkgs.config.allowUnfree = true;
+
   nixpkgs.config.allowUnfreePackages = ["vscode"];
   nixpkgs.hostPlatform = "x86_64-darwin";
 
@@ -41,17 +47,21 @@
 	keyboard = {
 		enableKeyMapping = true;
 		remapCapsLockToEscape = true;
+
 	};
 	defaults = {
 		dock = {
 			orientation = "right";
 			show-recents = false;
+			autohide = true;
 		};
 		finder = {
 			AppleShowAllFiles = true;
 			CreateDesktop = false;
 			QuitMenuItem = true;
 			ShowStatusBar = true;
+			FXPreferredViewStyle = "Nlsv";
+			ShowPathbar = true;
 		};
 		loginwindow = {
 			GuestEnabled = false;
@@ -60,6 +70,9 @@
 		NSGlobalDomain = {
 			InitialKeyRepeat = 10;
 			KeyRepeat = 1;
+			ApplePressAndHoldEnabled = false;
+			NSAutomaticCapitalizationEnabled = false;
+			"com.apple.sound.beep.volume" = 0.000;
 		};
 	};
   };

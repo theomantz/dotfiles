@@ -1,11 +1,6 @@
 { config, pkgs, ...}:
 
 {
-	programs.direnv.enable = true;
-	programs.direnv.nix-direnv.enable = true;
-
-	programs.htop.enable = true;
-	programs.htop.settings.show_program_path = true;
 
 	programs.home-manager.enable = true;
 	home.stateVersion = "22.05";
@@ -32,8 +27,25 @@
 		m-cli
 	];
 
+	nix = {
+		package = pkgs.nix;
+		settings.experimental-features = ["nix-command" "flakes"];
+	};
+
 
 	programs = {
+		htop = {
+			enable = true;
+			settings = {
+				show_program_path = true;
+			};
+		};
+		direnv = {
+			enable = true;
+			nix-direnv = {
+				enable = true;
+			};
+		};
 		git = {
 			enable = true;
 			userName = "theomantz";

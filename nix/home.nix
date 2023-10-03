@@ -1,4 +1,4 @@
-{ config, pkgs, ...}:
+{ config, pkgs, lib, ...}:
 
 {
 
@@ -73,6 +73,7 @@
 			];
 			enableUpdateCheck = false;
 			enableExtensionUpdateCheck = true;
+			userSettings = builtins.toJSON ./nix/vscode.nix;
 		};
 		zsh = {
 			enable = true;

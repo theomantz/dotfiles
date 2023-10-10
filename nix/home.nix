@@ -14,6 +14,7 @@
 		nodePackages.typescript
 		nodePackages.node2nix
 		nodePackages.prettier
+		nodePackages.aws-cdk
 		nodejs
 		purescript
 		htop
@@ -64,16 +65,16 @@
 		vscode = {
 			enable = true;
 			extensions = with pkgs.vscode-extensions; [
-				dracula-theme.theme-dracula
-				vscodevim.vim
-				yzhang.markdown-all-in-one
-				github.copilot
-				eamodio.gitlens
 				bbenoist.nix
+				dracula-theme.theme-dracula
+				yzhang.markdown-all-in-one
+				vscodevim.vim
+				eamodio.gitlens
+				github.copilot
 			];
 			enableUpdateCheck = false;
 			enableExtensionUpdateCheck = true;
-			userSettings = import ./nix/vscode.json;
+#			userSettings = import ./nixpkgs/vscode.nix;
 		};
 		zsh = {
 			enable = true;

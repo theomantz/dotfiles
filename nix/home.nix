@@ -74,7 +74,7 @@
 			];
 			enableUpdateCheck = false;
 			enableExtensionUpdateCheck = true;
-#			userSettings = import ./nixpkgs/vscode.nix;
+			userSettings = import ./nixpkgs/vscode.nix;
 		};
 		zsh = {
 			enable = true;

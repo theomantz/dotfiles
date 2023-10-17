@@ -2,8 +2,8 @@
 
 {
 	nix.useDaemon = true;
-	users.users.theomantz.home = "/Users/theomantz";
-	users.users.theomantz.shell = pkgs.zsh;
+	users.users.theo.home = "/Users/theo";
+	users.users.theo.shell = pkgs.zsh;
 	environment.shells = with pkgs; [ zsh ];
 	environment.systemPackages = [
 		pkgs.xc # Task executor (from Flake).
@@ -25,7 +25,7 @@
   nixpkgs.config.allowUnfree = true;
 
   nixpkgs.config.allowUnfreePackages = ["vscode"];
-  nixpkgs.hostPlatform = "x86_64-darwin";
+  nixpkgs.hostPlatform = "aarch64-darwin";
 
   programs.nix-index.enable = true;
   programs.zsh.enable = true;

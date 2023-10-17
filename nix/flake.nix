@@ -26,13 +26,13 @@
 	};
 
 	outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cask-versions, nix-vscode-extensions }: {
-		darwinConfigurations.Theos-MacBook-Pro = darwin.lib.darwinSystem {
-				system = "x86_64-darwin";
+		darwinConfigurations.theo = darwin.lib.darwinSystem {
+				system = "aarch64-darwin";
 				modules = [ 
 					nix-homebrew.darwinModules.nix-homebrew {
 						nix-homebrew = {
 							enable = true;
-							user = "theomantz";
+							user = "theo";
 							taps = {
 								"homebrew/homebrew-core" = homebrew-core;
 								"homebrew/homebrew-cask" = homebrew-cask;
@@ -43,7 +43,7 @@
 					home-manager.darwinModules.home-manager {
 						home-manager.useGlobalPkgs = true;
 						home-manager.useUserPackages = true;
-						home-manager.users.theomantz = import ./home.nix;
+						home-manager.users.theo = import ./home.nix;
 					}
 					./configuration.nix
 				];

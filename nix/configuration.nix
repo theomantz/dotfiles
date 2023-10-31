@@ -22,6 +22,7 @@
 		pkgs.python3
 		pkgs.awscli2
 		pkgs.go
+		pkgs.texlive
 	];
 
   nixpkgs.config.allowUnfree = true;

@@ -73,7 +73,7 @@ in
 		};
 		vscode = {
 			enable = true;
-			extensions = with pkgs.vscode-with-extensions; [
+			extensions = with pkgs.vscode-extensions; [
 				bbenoist.nix
 				dracula-theme.theme-dracula
 				yzhang.markdown-all-in-one

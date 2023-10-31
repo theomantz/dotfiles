@@ -20,27 +20,37 @@
 		pkgs.discord
 		pkgs.obsidian
 		pkgs.python3
+		pkgs.awscli2
+		pkgs.go
+		pkgs.spotify
 	];
 
   nixpkgs.config.allowUnfree = true;
-
   nixpkgs.config.allowUnfreePackages = ["vscode"];
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "vscode"
+    "steam"
+    "steam-original"
+    "steam-run"
+  ];
   nixpkgs.hostPlatform = "aarch64-darwin";
 
-  programs.nix-index.enable = true;
-  programs.zsh.enable = true;
+  programs = {
+      nix-index.enable = true;
+      zsh.enable = true;
+    };
 
   homebrew = {
-	enable = true;
-	casks = pkgs.callPackage ./casks.nix {};
+    enable = true;
+    casks = pkgs.callPackage ./casks.nix {};
   };
 
   fonts = {
-	fontDir.enable = true;
-	fonts = with pkgs; [
-		recursive
-		(nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-	];
+    fontDir.enable = true;
+    fonts = with pkgs; [
+      recursive
+      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    ];
   };
 
   system = {

@@ -22,7 +22,6 @@
 		pkgs.python3
 		pkgs.awscli2
 		pkgs.go
-		pkgs.spotify
 	];
 
   nixpkgs.config.allowUnfree = true;
@@ -38,7 +37,7 @@
   programs = {
       nix-index.enable = true;
       zsh.enable = true;
-    };
+  };
 
   homebrew = {
     enable = true;

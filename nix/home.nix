@@ -73,14 +73,13 @@ in
 		};
 		vscode = {
 			enable = true;
-			extensions = with pkgs.vscode-extensions; [
+			extensions = with pkgs.vscode-with-extensions; [
 				bbenoist.nix
 				dracula-theme.theme-dracula
 				yzhang.markdown-all-in-one
 				vscodevim.vim
 				eamodio.gitlens
 				github.copilot
-				James-Yu.latex-workshop
 			];
 			enableUpdateCheck = false;
 			enableExtensionUpdateCheck = true;

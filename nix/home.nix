@@ -3,7 +3,7 @@ let
   tex = (pkgs.texlive.combine {
     inherit (pkgs.texlive) scheme-medium
       dvisvgm dvipng chktex xetex luatex # for preview and export as html
-      wrapfig amsmath ulem hyperref capt-of;
+      wrapfig amsmath ulem hyperref capt-of geometry;
       #(setq org-latex-compiler "lualatex")
       #(setq org-preview-latex-default-process 'dvisvgm)
   });

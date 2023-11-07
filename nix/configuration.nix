@@ -56,7 +56,6 @@
 	keyboard = {
 		enableKeyMapping = true;
 		remapCapsLockToEscape = true;
-
 	};
 	defaults = {
 		dock = {

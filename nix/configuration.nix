@@ -25,18 +25,21 @@
 	];
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnfreePackages = ["vscode"];
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "vscode"
     "steam"
     "steam-original"
     "steam-run"
+	"1password"
+	"1password-gui"
   ];
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   programs = {
       nix-index.enable = true;
       zsh.enable = true;
+	  _1password.enable = true;
+	  _1password-gui.enable = true;
   };
 
   homebrew = {

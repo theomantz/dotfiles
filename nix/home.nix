@@ -80,6 +80,7 @@ in
 				vscodevim.vim
 				eamodio.gitlens
 				github.copilot
+				ms-python.python
 			];
 			enableUpdateCheck = false;
 			enableExtensionUpdateCheck = true;

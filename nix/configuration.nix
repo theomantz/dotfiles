@@ -30,16 +30,12 @@
     "steam"
     "steam-original"
     "steam-run"
-	"1password"
-	"1password-gui"
   ];
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   programs = {
-      nix-index.enable = true;
-      zsh.enable = true;
-	  _1password.enable = true;
-	  _1password-gui.enable = true;
+	nix-index.enable = true;
+	zsh.enable = true;
   };
 
   homebrew = {
@@ -76,6 +72,9 @@
 		};
 		loginwindow = {
 			GuestEnabled = false;
+		};
+		".GlobalPreferences" = {
+			"com.apple.mouse.scaling" = "-1.0";
 		};
 		menuExtraClock.ShowSeconds = true;
 		NSGlobalDomain = {

@@ -74,7 +74,7 @@
 			GuestEnabled = false;
 		};
 		".GlobalPreferences" = {
-			"com.apple.mouse.scaling" = "-1.0";
+			"com.apple.mouse.scaling" = "5.0";
 		};
 		menuExtraClock.ShowSeconds = true;
 		NSGlobalDomain = {

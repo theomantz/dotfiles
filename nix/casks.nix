@@ -8,4 +8,5 @@
 	"iterm2"
 	"bitwarden"
 	"steam"
+	"logi-options-plus"
 ]

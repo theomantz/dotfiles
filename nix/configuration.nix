@@ -81,6 +81,7 @@
 			InitialKeyRepeat = 10;
 			KeyRepeat = 1;
 			ApplePressAndHoldEnabled = false;
+			AppleShowAllExtenions = true;
 			NSAutomaticCapitalizationEnabled = false;
 			"com.apple.sound.beep.volume" = 0.000;
 		};

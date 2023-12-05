@@ -20,8 +20,10 @@
 		pkgs.discord
 		pkgs.obsidian
 		pkgs.python3
+    pkgs.poetry
 		pkgs.awscli2
 		pkgs.go
+		pkgs.docker
 	];
 
   nixpkgs.config.allowUnfree = true;
@@ -81,7 +83,7 @@
 			InitialKeyRepeat = 10;
 			KeyRepeat = 1;
 			ApplePressAndHoldEnabled = false;
-			AppleShowAllExtenions = true;
+			AppleShowAllExtensions = true;
 			NSAutomaticCapitalizationEnabled = false;
 			"com.apple.sound.beep.volume" = 0.000;
 		};

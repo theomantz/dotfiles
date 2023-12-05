@@ -11,4 +11,6 @@
 	"logi-options-plus"
 	"google-chrome"
 	"google-chrome-dev"
+	"whatsapp"
+	"warp"
 ]

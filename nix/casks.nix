@@ -13,4 +13,5 @@
 	"google-chrome-dev"
 	"whatsapp"
 	"warp"
+  "arc"
 ]

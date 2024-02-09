@@ -24,6 +24,8 @@
 		pkgs.awscli2
 		pkgs.go
 		pkgs.docker
+    pkgs.docker-compose
+    pkgs.postgresql
 	];
 
   nixpkgs.config.allowUnfree = true;

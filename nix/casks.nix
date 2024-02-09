@@ -13,4 +13,6 @@
   "arc"
   "amethyst"
   "goland"
+  "docker"
+  "postman"
 ]

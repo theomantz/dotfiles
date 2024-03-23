@@ -13,6 +13,9 @@
   "arc"
   "amethyst"
   "goland"
+  "intellij-idea"
   "docker"
   "postman"
+  "figma"
+  "sf-symbols"
 ]

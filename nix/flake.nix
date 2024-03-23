@@ -2,8 +2,8 @@
 	description = "nix flake configuration for theo's macbook pro";
 
 	inputs = {
-		nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-23.05-darwin"; 
-		home-manager.url = "github:nix-community/home-manager/release-23.05"; # ...
+		nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; 
+		home-manager.url = "github:nix-community/home-manager"; # ...
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
 		darwin.url = "github:lnl7/nix-darwin";
 		darwin.inputs.nixpkgs.follows = "nixpkgs"; # ...

@@ -7,11 +7,6 @@
 	environment.shells = with pkgs; [ zsh ];
 	environment.systemPackages = [
 		pkgs.xc # Task executor (from Flake).
-		# Java development.
-		pkgs.jdk # Development.
-		pkgs.openjdk19 # Development.
-		pkgs.jre # Runtime.
-		pkgs.gradle # Build tool
 		pkgs.neovim
 		pkgs.home-manager
 		pkgs.gh
@@ -42,10 +37,10 @@
     zsh.enable = true;
   };
 
-#  homebrew = {
-#    enable = true;
-#    casks = pkgs.callPackage ./casks.nix {};
-#  };
+  homebrew = {
+    enable = true;
+    casks = pkgs.callPackage ./casks.nix {};
+  };
 
   fonts = {
     fontDir.enable = true;

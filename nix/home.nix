@@ -23,6 +23,8 @@ in
 		nodePackages.node2nix
 		nodePackages.prettier
 		nodePackages.aws-cdk
+    nodePackages.yarn
+    dotnetCorePackages.sdk_8_0_3xx
 		nodejs
 		purescript
 		htop
@@ -30,7 +32,6 @@ in
 		gh
 		zsh
 		oh-my-zsh
-		bitwarden-cli
 		gitAndTools.gh
 		tex
 	] ++ lib.optionals stdenv.isDarwin [

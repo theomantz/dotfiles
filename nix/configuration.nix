@@ -2,6 +2,7 @@
 
 {
 	nix.useDaemon = true;
+  system.stateVersion = 5;
 	users.users.theo.home = "/Users/theo";
 	users.users.theo.shell = pkgs.zsh;
 	environment.shells = with pkgs; [ zsh ];
@@ -40,11 +41,11 @@
   homebrew = {
     enable = true;
     casks = pkgs.callPackage ./casks.nix {};
+    onActivation.upgrade = true;
   };
 
   fonts = {
-    fontDir.enable = true;
-    fonts = with pkgs; [
+    packages = with pkgs; [
       recursive
       (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];

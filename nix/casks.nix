@@ -18,4 +18,6 @@
   "postman"
   "figma"
   "sf-symbols"
+  "discord"
+  "protonvpn"
 ]

@@ -2,13 +2,11 @@
 
 [
 	"signal"
-	"firefox-developer-edition"
 	"opera"
 	"iterm2"
 	"bitwarden"
 	"steam"
-	"logi-options-plus"
-	"google-chrome-dev"
+	"google-chrome"
 	"warp"
   "arc"
   "amethyst"

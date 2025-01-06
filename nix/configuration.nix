@@ -44,12 +44,9 @@
     onActivation.upgrade = true;
   };
 
-  fonts = {
-    packages = with pkgs; [
-      recursive
-      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-    ];
-  };
+  fonts.packages = [
+    pkgs.nerd-fonts.jetbrains-mono
+  ];
 
   system = {
     keyboard = {

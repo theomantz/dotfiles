@@ -24,16 +24,32 @@
         ]
       },
       "locked": {
-        "lastModified": 1736085891,
-        "narHash": "sha256-bTl9fcUo767VaSx4Q5kFhwiDpFQhBKna7lNbGsqCQiA=",
+        "lastModified": 1736631212,
+        "narHash": "sha256-mG9lRZBcPiAGiVJ9B97BJoIGQcSBWIVlBiN30QYCtG0=",
         "owner": "lnl7",
         "repo": "nix-darwin",
-        "rev": "ba9b3173b0f642ada42b78fb9dfc37ca82266f6c",
+        "rev": "6ace2f2d12bdf74235d5cbf9fbd34a71c9716685",
         "type": "github"
       },
       "original": {
         "owner": "lnl7",
         "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
+    "dotnet-sdk-versions": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1737052053,
+        "narHash": "sha256-Oh7uJ8bsBJzT0xiUgZVBRYhw7jQOFqtWc8YF666YzP0=",
+        "owner": "isen-ng",
+        "repo": "homebrew-dotnet-sdk-versions",
+        "rev": "6808840265226822ac3e1c09ba16915111393b8a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "isen-ng",
+        "repo": "homebrew-dotnet-sdk-versions",
         "type": "github"
       }
     },
@@ -78,11 +94,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1736089250,
-        "narHash": "sha256-/LPWMiiJGPHGd7ZYEgmbE2da4zvBW0acmshUjYC3WG4=",
+        "lastModified": 1736508663,
+        "narHash": "sha256-ZOaGwa+WnB7Zn3YXimqjmIugAnHePdXCmNu+AHkq808=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "172b91bfb2b7f5c4a8c6ceac29fd53a01ef07196",
+        "rev": "2532b500c3ed2b8940e831039dcec5a5ea093afc",
         "type": "github"
       },
       "original": {
@@ -94,11 +110,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1736168969,
-        "narHash": "sha256-sMHiojFrrb3Ch99llb8eiOAJNkiZt0idbgch+HvlS4Y=",
+        "lastModified": 1736730704,
+        "narHash": "sha256-xGE78c8O4SjxW4/YdKWPWGURl+xSKVUwdGQLcAaehJU=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "31a9e5f772b8397dfadc909794bb84989c45258a",
+        "rev": "089302c42063f5c24873f6f1c925e5fe88c44623",
         "type": "github"
       },
       "original": {
@@ -126,11 +142,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1736164643,
-        "narHash": "sha256-BlyNBCHqcb6mRCJqRhoVT1cvR/xPg7rw+15mCUaFMPY=",
+        "lastModified": 1736730518,
+        "narHash": "sha256-rT5ze7n5+hlmxeUjlHD3tMd9EqNiID6vtw6uSd1Er2g=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "c72effb05759b676db54ac54cfde2f1924ac16a3",
+        "rev": "d755f3e53075958ff8291a839d981b001cf9ed8c",
         "type": "github"
       },
       "original": {
@@ -184,11 +200,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1736128196,
-        "narHash": "sha256-wSVfnO8Hixn767LsdAE/FIHO5IemkfbTEZZ03+HUowM=",
+        "lastModified": 1736733107,
+        "narHash": "sha256-6232F8et5z7XTxK0RuX6bocT6yYGJhlmlHbFdZuHcP0=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "ba2fa846fba43fb9c8cd71b1435d227a7925fae0",
+        "rev": "44474e2ca975af013f1594abd6c922f2c8dba022",
         "type": "github"
       },
       "original": {
@@ -244,11 +260,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1736012469,
-        "narHash": "sha256-/qlNWm/IEVVH7GfgAIyP6EsVZI6zjAx1cV5zNyrs+rI=",
+        "lastModified": 1736523798,
+        "narHash": "sha256-Xb8mke6UCYjge9kPR9o4P1nVrhk7QBbKv3xQ9cj7h2s=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8f3e1f807051e32d8c95cd12b9b421623850a34d",
+        "rev": "130595eba61081acde9001f43de3248d8888ac4a",
         "type": "github"
       },
       "original": {
@@ -261,6 +277,7 @@
     "root": {
       "inputs": {
         "darwin": "darwin",
+        "dotnet-sdk-versions": "dotnet-sdk-versions",
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
         "homebrew-cask-versions": "homebrew-cask-versions",

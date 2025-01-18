@@ -10,6 +10,7 @@
 	"warp"
   "arc"
   "amethyst"
+  "obsidian"
   "goland"
   "intellij-idea"
   "docker"
@@ -18,4 +19,5 @@
   "sf-symbols"
   "discord"
   "protonvpn"
+  "dotnet-sdk8-0-300"
 ]

@@ -11,10 +11,6 @@
 		pkgs.neovim
 		pkgs.home-manager
 		pkgs.gh
-		pkgs.spotify
-		pkgs.slack
-		pkgs.discord
-		pkgs.obsidian
 		pkgs.python3
     pkgs.poetry
 		pkgs.awscli2

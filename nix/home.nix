@@ -1,13 +1,4 @@
 { config, pkgs, lib, ...}:
-let
-  tex = (pkgs.texlive.combine {
-    inherit (pkgs.texlive) scheme-medium
-      dvisvgm dvipng chktex xetex luatex # for preview and export as html
-      wrapfig amsmath ulem hyperref capt-of geometry;
-      #(setq org-latex-compiler "lualatex")
-      #(setq org-preview-latex-default-process 'dvisvgm)
-  });
-in
 {
 
 	programs.home-manager.enable = true;
@@ -24,7 +15,6 @@ in
 		nodePackages.prettier
 		nodePackages.aws-cdk
     nodePackages.yarn
-    dotnetCorePackages.sdk_8_0_3xx
 		nodejs
 		purescript
 		htop
@@ -33,7 +23,7 @@ in
 		zsh
 		oh-my-zsh
 		gitAndTools.gh
-		tex
+    fzf
 	] ++ lib.optionals stdenv.isDarwin [
 		m-cli
 	];

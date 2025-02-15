@@ -93,6 +93,9 @@
 				plugins = [ "git" ];
 				theme = "robbyrussell";
 			};
+      initExtra = ''
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+      '';
 		};
 		gh = {
 			enable = true;

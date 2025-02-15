@@ -29,7 +29,7 @@
 		nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 	};
 
-	outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cask-versions, dotnet-sdk-versions, nix-vscode-extensions }: {
+	outputs = { self, nixpkgs, home-manager, darwin, nix-vscode-extensions, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cask-versions, dotnet-sdk-versions }: {
 		darwinConfigurations.theo = darwin.lib.darwinSystem {
 				system = "aarch64-darwin";
 				modules = [ 

@@ -31,16 +31,44 @@
 
   programs = {
     nix-index.enable = true;
-    zsh.enable = true;
+    zsh = {
+      enable = true;
+    };
   };
 
-  homebrew = {
-    enable = true;
-    casks = pkgs.callPackage ./casks.nix {};
-    onActivation.upgrade = true;
-  };
+  # homebrew = {
+  #   enable = true;
+  #   taps = [
+  #     "isen-ng/homebrew-dotnet-sdk-versions"
+  #   ];
+  #   casks = [
+  #     "signal"
+  #     "opera"
+  #     "iterm2"
+  #     "bitwarden"
+  #     "steam"
+  #     "google-chrome"
+  #     "warp"
+  #     "arc"
+  #     "amethyst"
+  #     "obsidian"
+  #     "goland"
+  #     "intellij-idea"
+  #     "docker"
+  #     "postman"
+  #     "figma"
+  #     "sf-symbols"
+  #     "discord"
+  #     "protonvpn"
+  #     "dotnet-sdk8-0-300"
+  #   ];
+  #     onActivation = {
+  #       upgrade = true;
+  #       cleanup = "uninstall";
+  #     };
+  #   };
 
-  fonts.packages = [
+    fonts.packages = [
     pkgs.nerd-fonts.jetbrains-mono
   ];
 

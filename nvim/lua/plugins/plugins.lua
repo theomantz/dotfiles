@@ -68,9 +68,22 @@ return {
         sorting_strategy = "ascending",
         winblend = 0,
       },
+      file_system = {
+        visible = true
+      },
     },
   },
-
+  -- neo-tree
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+      "MunifTanjim/nui.nvim",
+      -- {"3rd/image.nvim", opts = {}}, -- Optional image support in preview window: See `# Preview Mode` for more information
+    }
+  },
   -- add telescope-fzf-native
   {
     "telescope.nvim",
@@ -82,20 +95,6 @@ return {
       end,
     },
   },
-
-  -- add pyrght to lspconfig
-  {
-    "neovim/nvim-lspconfig",
-    ---@class PluginLspOpts
-    opts = {
-      ---@type lspconfig.options
-      servers = {
-        -- pyright will be automatically installed with mason and loaded with lspconfig
-        pyright = {},
-      },
-    },
-  },
-
   -- add tsserver and setup with typescript.nvim instead of lspconfig
   {
     "neovim/nvim-lspconfig",

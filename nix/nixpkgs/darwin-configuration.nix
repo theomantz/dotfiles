@@ -9,8 +9,8 @@
 			experimental-features = ["nix-command" "flakes"]; 
 		}; 
 		 configureBuildUsers = true;
+     enable = true;
 	};
 	system.stateVersion = 4;
-	services.nix-daemon.enable = true;
 	programs.zsh.enable = true;
 } 

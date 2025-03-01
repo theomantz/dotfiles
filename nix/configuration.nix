@@ -1,7 +1,6 @@
 { pkgs, lib, ... }:
 
 {
-	nix.useDaemon = true;
   system.stateVersion = 5;
 	users.users.theo.home = "/Users/theo";
 	users.users.theo.shell = pkgs.zsh;
@@ -109,6 +108,14 @@
     };
   };
 
-  security.pam.enableSudoTouchIdAuth = true;
+  security = {
+    pam = {
+      services = {
+        sudo_local = {
+          touchIdAuth = true;
+        }
+      };
+    };
+  };
   services.nix-daemon.enable = true;
 }

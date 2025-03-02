@@ -2,6 +2,7 @@
 
 {
   system.stateVersion = 5;
+  ids.gids.nixbld = 30000;
 	users.users.theo.home = "/Users/theo";
 	users.users.theo.shell = pkgs.zsh;
 	environment.shells = with pkgs; [ zsh ];
@@ -17,6 +18,7 @@
 		pkgs.docker
     pkgs.docker-compose
     pkgs.postgresql
+    pkgs.sshfs
 	];
 
   nixpkgs.config.allowUnfree = true;
@@ -35,39 +37,40 @@
     };
   };
 
-  # homebrew = {
-  #   enable = true;
-  #   taps = [
-  #     "isen-ng/homebrew-dotnet-sdk-versions"
-  #   ];
-  #   casks = [
-  #     "signal"
-  #     "opera"
-  #     "iterm2"
-  #     "bitwarden"
-  #     "steam"
-  #     "google-chrome"
-  #     "warp"
-  #     "arc"
-  #     "amethyst"
-  #     "obsidian"
-  #     "goland"
-  #     "intellij-idea"
-  #     "docker"
-  #     "postman"
-  #     "figma"
-  #     "sf-symbols"
-  #     "discord"
-  #     "protonvpn"
-  #     "dotnet-sdk8-0-300"
-  #   ];
-  #     onActivation = {
-  #       upgrade = true;
-  #       cleanup = "uninstall";
-  #     };
-  #   };
+  homebrew = {
+    enable = true;
+    taps = [
+      "isen-ng/homebrew-dotnet-sdk-versions"
+    ];
+    casks = [
+      "signal"
+      "opera"
+      "iterm2"
+      "bitwarden"
+      "steam"
+      "google-chrome"
+      "warp"
+      "arc"
+      "amethyst"
+      "obsidian"
+      "goland"
+      "intellij-idea"
+      "docker"
+      "postman"
+      "figma"
+      "sf-symbols"
+      "discord"
+      "protonvpn"
+      "dotnet-sdk8-0-300"
+      "macfuse"
+    ];
+    onActivation = {
+      upgrade = true;
+      cleanup = "uninstall";
+    };
+  };
 
-    fonts.packages = [
+  fonts.packages = [
     pkgs.nerd-fonts.jetbrains-mono
   ];
 
@@ -113,9 +116,8 @@
       services = {
         sudo_local = {
           touchIdAuth = true;
-        }
+        };
       };
     };
   };
-  services.nix-daemon.enable = true;
 }

@@ -46,12 +46,23 @@
 						};
 					}
 					home-manager.darwinModules.home-manager {
-						home-manager.useGlobalPkgs = true;
-						home-manager.useUserPackages = true;
-						home-manager.users.theo = import ./home.nix;
+						home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "backup";
+              users = {
+                theo = import ./home.nix;
+              };
+            };
 					}
 					./configuration.nix
 				];
 		};
+    ubuntuConfigurations = {
+      mycroft = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = ./home.nix;
+      }:
+    };
 	};
 }

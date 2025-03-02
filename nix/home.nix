@@ -1,7 +1,9 @@
 { config, pkgs, lib, ...}:
 {
 
-	programs.home-manager.enable = true;
+	programs.home-manager = {
+    enable = true;
+  };
 	home.stateVersion = "22.05";
 
 
@@ -32,8 +34,9 @@
 		settings.experimental-features = ["nix-command" "flakes"];
 	};
 
-
 	programs = {
+    fzf.enable = true;
+    jq.enable = true;
 		htop = {
 			enable = true;
 			settings = {
@@ -63,21 +66,25 @@
 			enable = true;
 			defaultEditor = true;
 		};
-		vscode = {
-			enable = true;
-			extensions = with pkgs.vscode-extensions; [
-				bbenoist.nix
-				dracula-theme.theme-dracula
-				yzhang.markdown-all-in-one
-				vscodevim.vim
-				eamodio.gitlens
-				github.copilot
-				ms-python.python
-			];
-			enableUpdateCheck = false;
-			enableExtensionUpdateCheck = true;
-			userSettings = import ./nixpkgs/vscode/vscode.nix;
-		};
+		# vscode = {
+		# 	enable = true;
+		#     profiles = {
+		#       default = {
+		#         enableUpdateCheck = false;
+		#         enableExtensionUpdateCheck = true;
+		#         userSettings = import ./nixpkgs/vscode/vscode.nix;
+		#         extensions = with pkgs.vscode-extensions; [
+		#           bbenoist.nix
+		#           dracula-theme.theme-dracula
+		#           yzhang.markdown-all-in-one
+		#           vscodevim.vim
+		#           eamodio.gitlens
+		#           github.copilot
+		#           ms-python.python
+		#         ];
+		#       };
+		#     };
+		# };
 		zsh = {
 			enable = true;
 			autocd = true;

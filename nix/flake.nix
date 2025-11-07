@@ -60,9 +60,9 @@
 		};
     ubuntuConfigurations = {
       mycroft = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
+          inherit nixpkgs;
           modules = ./home.nix;
-      }:
+      };
     };
 	};
 }

@@ -9,7 +9,6 @@
 	environment.systemPackages = [
 		pkgs.xc # Task executor (from Flake).
 		pkgs.neovim
-		pkgs.home-manager
 		pkgs.gh
 		pkgs.python3
     pkgs.poetry
@@ -19,6 +18,7 @@
     pkgs.docker-compose
     pkgs.postgresql
     pkgs.sshfs
+    pkgs.claude-code
 	];
 
   nixpkgs.config.allowUnfree = true;
@@ -55,7 +55,7 @@
       "obsidian"
       "goland"
       "intellij-idea"
-      "docker"
+      "docker-desktop"
       "postman"
       "figma"
       "sf-symbols"
@@ -65,6 +65,7 @@
       "macfuse"
       "ghostty"
       "slack"
+      "claude"
     ];
     onActivation = {
       upgrade = true;

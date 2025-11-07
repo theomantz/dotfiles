@@ -41,28 +41,28 @@
 								"homebrew/homebrew-core" = homebrew-core;
 								"homebrew/homebrew-cask" = homebrew-cask;
 								"homebrew/homebrew-cask-versions" = homebrew-cask-versions;
-                "isen-ng/homebrew-dotnet-sdk-versions" = dotnet-sdk-versions;
+								"isen-ng/homebrew-dotnet-sdk-versions" = dotnet-sdk-versions;
 							};
 						};
 					}
 					home-manager.darwinModules.home-manager {
 						home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              backupFileExtension = "backup";
-              users = {
-                theo = import ./home.nix;
-              };
-            };
+							useGlobalPkgs = true;
+							useUserPackages = true;
+							backupFileExtension = "backup";
+							users = {
+								theo = import ./home.nix;
+							};
+						};
 					}
 					./configuration.nix
 				];
 		};
-    ubuntuConfigurations = {
-      mycroft = home-manager.lib.homeManagerConfiguration {
-          inherit nixpkgs;
-          modules = ./home.nix;
-      };
-    };
+		ubuntuConfigurations = {
+			mycroft = home-manager.lib.homeManagerConfiguration {
+				inherit nixpkgs;
+				modules = [ ./home.nix ];
+			};
+		};
 	};
 }

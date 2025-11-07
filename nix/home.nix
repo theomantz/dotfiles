@@ -24,7 +24,6 @@
 		gh
 		zsh
 		oh-my-zsh
-		gitAndTools.gh
     fzf
 	] ++ lib.optionals stdenv.isDarwin [
 		m-cli
@@ -35,8 +34,8 @@
 	};
 
 	programs = {
-    fzf.enable = true;
-    jq.enable = true;
+		fzf.enable = true;
+		jq.enable = true;
 		htop = {
 			enable = true;
 			settings = {
@@ -51,14 +50,16 @@
 		};
 		git = {
 			enable = true;
-			userName = "theomantz";
-			userEmail = "theo@mantz.nyc";
+			user = {
+				name = "theomantz";
+				email = "theo@mantz.nyc";
+			};
 			ignores = [".DS_Store" "node_modules/" ".direnv/"];
-			extraConfig = {
+			settings = {
 				credential.helper = "${
 					pkgs.git.override {withLibsecret = true;}
 				}/bin/git-credential-libsecret";
-        init.defaultBranch = "main";
+				init.defaultBranch = "main";
 			};
 
 		};
@@ -66,25 +67,6 @@
 			enable = true;
 			defaultEditor = true;
 		};
-		# vscode = {
-		# 	enable = true;
-		#     profiles = {
-		#       default = {
-		#         enableUpdateCheck = false;
-		#         enableExtensionUpdateCheck = true;
-		#         userSettings = import ./nixpkgs/vscode/vscode.nix;
-		#         extensions = with pkgs.vscode-extensions; [
-		#           bbenoist.nix
-		#           dracula-theme.theme-dracula
-		#           yzhang.markdown-all-in-one
-		#           vscodevim.vim
-		#           eamodio.gitlens
-		#           github.copilot
-		#           ms-python.python
-		#         ];
-		#       };
-		#     };
-		# };
 		zsh = {
 			enable = true;
 			autocd = true;
@@ -100,9 +82,9 @@
 				plugins = [ "git" ];
 				theme = "robbyrussell";
 			};
-      initExtra = ''
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-      '';
+			initContent = ''
+				eval "$(/opt/homebrew/bin/brew shellenv)"
+			'';
 		};
 		gh = {
 			enable = true;

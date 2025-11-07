@@ -63,6 +63,8 @@
       "protonvpn"
       "dotnet-sdk8-0-300"
       "macfuse"
+      "ghostty"
+      "slack"
     ];
     onActivation = {
       upgrade = true;
@@ -75,6 +77,7 @@
   ];
 
   system = {
+    primaryUser = "theo";
     keyboard = {
       enableKeyMapping = true;
       remapCapsLockToEscape = true;

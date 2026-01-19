@@ -8,19 +8,26 @@
 
 
 	home.packages = with pkgs; [
+		awscli2
+		bat
+		claude-code
+		codex
 		coreutils
 		curl
-		wget
-		jq
-		nodejs
-		purescript
-		htop
-		ripgrep
+		docker
+		docker-compose
 		gh
-		zsh
-		oh-my-zsh
-    fzf
-	] ++ lib.optionals stdenv.isDarwin [
+		go
+		nodejs
+		poetry
+		postgresql
+		purescript
+		python3
+		ripgrep
+		sshfs
+		wget
+		xc
+	] ++ lib.optionals pkgs.stdenv.isDarwin [
 		m-cli
 	];
 
@@ -91,15 +98,6 @@
 			initContent = ''
 				eval "$(/opt/homebrew/bin/brew shellenv)"
 			'';
-		};
-		gh = {
-			enable = true;
-			settings = {
-				git_protocol = "ssh";
-				hosts = ["github.com"];
-				editor = "nvim";
-
-			};
 		};
 	};
 }

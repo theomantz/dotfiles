@@ -22,14 +22,13 @@
 			url = "github:homebrew/homebrew-cask-versions";
 			flake = false;
 		};
-    dotnet-sdk-versions = {
-        url = "github:isen-ng/homebrew-dotnet-sdk-versions";
-        flake = false;
-    };
-		nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+		dotnet-sdk-versions = {
+			url = "github:isen-ng/homebrew-dotnet-sdk-versions";
+			flake = false;
+		};
 	};
 
-	outputs = { self, nixpkgs, home-manager, darwin, nix-vscode-extensions, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cask-versions, dotnet-sdk-versions }: {
+	outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cask-versions, dotnet-sdk-versions }: {
 		darwinConfigurations.theo = darwin.lib.darwinSystem {
 				system = "aarch64-darwin";
 				modules = [ 
@@ -57,12 +56,6 @@
 					}
 					./configuration.nix
 				];
-		};
-		ubuntuConfigurations = {
-			mycroft = home-manager.lib.homeManagerConfiguration {
-				inherit nixpkgs;
-				modules = [ ./home.nix ];
-			};
 		};
 	};
 }

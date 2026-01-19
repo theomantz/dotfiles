@@ -6,20 +6,6 @@
 	users.users.theo.home = "/Users/theo";
 	users.users.theo.shell = pkgs.zsh;
 	environment.shells = with pkgs; [ zsh ];
-	environment.systemPackages = [
-		pkgs.xc # Task executor (from Flake).
-		pkgs.neovim
-		pkgs.gh
-		pkgs.python3
-    pkgs.poetry
-		pkgs.awscli2
-		pkgs.go
-		pkgs.docker
-    pkgs.docker-compose
-    pkgs.postgresql
-    pkgs.sshfs
-    pkgs.claude-code
-	];
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
@@ -40,6 +26,9 @@
   homebrew = {
     enable = true;
     taps = [
+      "homebrew/cask"
+      "homebrew/cask-versions"
+      "homebrew/core"
       "isen-ng/homebrew-dotnet-sdk-versions"
     ];
     casks = [
@@ -66,6 +55,7 @@
       "ghostty"
       "slack"
       "claude"
+      "chatgpt"
     ];
     onActivation = {
       upgrade = true;

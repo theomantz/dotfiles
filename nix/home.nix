@@ -17,8 +17,9 @@
 		docker
 		docker-compose
 		go
-		nodejs
-		poetry
+			nodejs
+			poppler
+			poetry
 		postgresql
 		purescript
 		python3

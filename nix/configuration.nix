@@ -1,10 +1,6 @@
 { pkgs, lib, ... }:
 
 {
-  system.stateVersion = 5;
-  ids.gids.nixbld = 30000;
-	users.users.theo.home = "/Users/theo";
-	users.users.theo.shell = pkgs.zsh;
 	environment.shells = with pkgs; [ zsh ];
 
   nixpkgs.config.allowUnfree = true;
@@ -14,7 +10,6 @@
     "steam-original"
     "steam-run"
   ];
-  nixpkgs.hostPlatform = "aarch64-darwin";
 
   programs = {
     nix-index.enable = true;
@@ -68,7 +63,6 @@
   ];
 
   system = {
-    primaryUser = "theo";
     keyboard = {
       enableKeyMapping = true;
       remapCapsLockToEscape = true;

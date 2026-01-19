@@ -2,6 +2,7 @@
 *.swp
 /.idea/
 /direnv/
+/gh/
 /gh/hosts.yml
 /gh/hosts.yml.backup
 /git/

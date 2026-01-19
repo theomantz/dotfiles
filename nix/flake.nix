@@ -29,10 +29,10 @@
 	};
 
 	outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cask-versions, dotnet-sdk-versions }: {
-		darwinConfigurations.theo = darwin.lib.darwinSystem {
-				system = "aarch64-darwin";
-				modules = [ 
-					nix-homebrew.darwinModules.nix-homebrew {
+			darwinConfigurations.theo = darwin.lib.darwinSystem {
+					system = "aarch64-darwin";
+					modules = [ 
+						nix-homebrew.darwinModules.nix-homebrew {
 						nix-homebrew = {
 							enable = true;
 							user = "theo";
@@ -53,9 +53,10 @@
 								theo = import ./home.nix;
 							};
 						};
-					}
-					./configuration.nix
-				];
+						}
+						./configuration.nix
+						./hosts/theo.nix
+					];
+			};
 		};
-	};
 }

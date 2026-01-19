@@ -29,13 +29,16 @@
         ... remaining configuration
     }
 
+    # in hosts/<name>.nix
+    nixpkgs.hostPlatform = "<system_architecture>"
+    users.users.<user>.home = "<user_home_dir>"
+    system.primaryUser = "<user>"
+
     # in configuration.nix
-    {...}: 
-    {
-        users.user.<user>.home = "<user_home_dir>"
-    }
+    # keep system defaults and GUI apps here
     ```
     and so on.
+    CLI tools and user programs live in `nix/home.nix` while GUI apps live in `nix/configuration.nix`.
 5. Run nix build from the configuraiton directory or the nix subdirectory of the configuration directory.
 
     ```shell

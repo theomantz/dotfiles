@@ -16,7 +16,6 @@
 		curl
 		docker
 		docker-compose
-		gh
 		go
 		nodejs
 		poetry
@@ -50,8 +49,8 @@
 				enable = true;
 			};
 		};
-		git = {
-			enable = true;
+			git = {
+				enable = true;
 			ignores = [".DS_Store" "node_modules/" ".direnv/"];
 			settings = {
 				credential.helper = "${
@@ -62,6 +61,22 @@
           name = "theomantz";
           email = "theo@mantz.nyc";
         };
+			};
+			gh = {
+				enable = true;
+				settings = {
+					aliases = {
+						co = "pr checkout";
+					};
+					accessible_colors = "disabled";
+					accessible_prompter = "disabled";
+					color_labels = "disabled";
+					git_protocol = "https";
+					prefer_editor_prompt = "disabled";
+					prompt = "enabled";
+					spinner = "enabled";
+					version = 1;
+				};
 			};
 			includes = [
 				{

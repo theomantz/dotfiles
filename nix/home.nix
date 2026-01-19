@@ -52,16 +52,28 @@
 		};
 			git = {
 				enable = true;
-			ignores = [".DS_Store" "node_modules/" ".direnv/"];
-			settings = {
-				credential.helper = "${
-					pkgs.git.override {withLibsecret = true;}
-				}/bin/git-credential-libsecret";
-				init.defaultBranch = "main";
-        user = {
-          name = "theomantz";
-          email = "theo@mantz.nyc";
-        };
+				ignores = [".DS_Store" "node_modules/" ".direnv/"];
+				settings = {
+					credential.helper = "${
+						pkgs.git.override {withLibsecret = true;}
+					}/bin/git-credential-libsecret";
+					init.defaultBranch = "main";
+					user = {
+						name = "theomantz";
+						email = "theo@mantz.nyc";
+					};
+				};
+				includes = [
+					{
+						condition = "gitdir:~/work/";
+						contents = {
+							user = {
+								name = "theomantz-luna";
+								email = "theo@lead.bank";
+							};
+						};
+					}
+				];
 			};
 			gh = {
 				enable = true;
@@ -79,19 +91,6 @@
 					version = 1;
 				};
 			};
-			includes = [
-				{
-					condition = "gitdir:~/work/";
-					contents = {
-						user = {
-							name = "theomantz-luna";
-							email = "theo@lead.bank";
-						};
-					};
-				}
-			];
-
-		};
 		neovim = {
 			enable = true;
 			defaultEditor = true;

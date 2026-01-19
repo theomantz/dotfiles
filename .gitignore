@@ -16,7 +16,7 @@
 /nix/direnv/
 /nix/gh/
 /nix/git/
-/nix/hosts/
+/nix/hosts/*.swp
 /nix/nix.conf
 /nix/texput.log
 /nix/result

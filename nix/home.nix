@@ -1,10 +1,15 @@
 { config, pkgs, lib, ...}:
+let
+in
 {
 
 	programs.home-manager = {
     enable = true;
   };
 	home.stateVersion = "22.05";
+	home.sessionPath = [
+		"$HOME/go/bin"
+	];
 
 
 	home.packages = with pkgs; [
@@ -12,19 +17,23 @@
 		bat
 		claude-code
 		codex
+    gemini
 		coreutils
 		curl
 		docker
 		docker-compose
+		git
 		go
-			nodejs
-			poppler
-			poetry
+    nodejs
+    poppler
+    poetry
 		postgresql
 		purescript
 		python3
 		ripgrep
+		sqlite
 		sshfs
+		tmux
 		wget
 		xc
 	] ++ lib.optionals pkgs.stdenv.isDarwin [

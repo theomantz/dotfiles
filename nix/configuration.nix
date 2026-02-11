@@ -22,7 +22,6 @@
     enable = true;
     taps = [
       "homebrew/cask"
-      "homebrew/cask-versions"
       "homebrew/core"
       "isen-ng/homebrew-dotnet-sdk-versions"
     ];
@@ -39,7 +38,10 @@
       "obsidian"
       "goland"
       "intellij-idea"
-      "docker-desktop"
+      {
+        name = "docker-desktop";
+        greedy = true;
+      }
       "postman"
       "figma"
       "sf-symbols"
@@ -51,8 +53,10 @@
       "slack"
       "claude"
       "chatgpt"
+      "codex"
     ];
     onActivation = {
+      autoUpdate = true;
       upgrade = true;
       cleanup = "uninstall";
     };

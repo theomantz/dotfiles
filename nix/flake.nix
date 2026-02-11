@@ -18,17 +18,13 @@
 			url = "github:homebrew/homebrew-cask";
 			flake = false;
 		};
-		homebrew-cask-versions = {
-			url = "github:homebrew/homebrew-cask-versions";
-			flake = false;
-		};
 		dotnet-sdk-versions = {
 			url = "github:isen-ng/homebrew-dotnet-sdk-versions";
 			flake = false;
 		};
 	};
 
-	outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-cask-versions, dotnet-sdk-versions }: {
+	outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, homebrew-core, homebrew-cask, dotnet-sdk-versions }: {
 			darwinConfigurations.theo = darwin.lib.darwinSystem {
 					system = "aarch64-darwin";
 					modules = [ 
@@ -36,13 +32,12 @@
 						nix-homebrew = {
 							enable = true;
 							user = "theo";
-							taps = {
-								"homebrew/homebrew-core" = homebrew-core;
-								"homebrew/homebrew-cask" = homebrew-cask;
-								"homebrew/homebrew-cask-versions" = homebrew-cask-versions;
-								"isen-ng/homebrew-dotnet-sdk-versions" = dotnet-sdk-versions;
+								taps = {
+									"homebrew/homebrew-core" = homebrew-core;
+									"homebrew/homebrew-cask" = homebrew-cask;
+									"isen-ng/homebrew-dotnet-sdk-versions" = dotnet-sdk-versions;
+								};
 							};
-						};
 					}
 					home-manager.darwinModules.home-manager {
 						home-manager = {

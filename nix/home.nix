@@ -1,6 +1,4 @@
 { config, pkgs, lib, ...}:
-let
-in
 {
 
 	programs.home-manager = {
@@ -17,19 +15,14 @@ in
 		bat
 		claude-code
 		codex
-    gemini
 		coreutils
 		curl
 		docker
 		docker-compose
 		git
 		go
-    nodejs
-    poppler
-    poetry
-		postgresql
+		poppler
 		purescript
-		python3
 		ripgrep
 		sqlite
 		sshfs

@@ -25,6 +25,9 @@
       "homebrew/core"
       "isen-ng/homebrew-dotnet-sdk-versions"
     ];
+    brews = [
+      "gemini-cli"
+    ];
     casks = [
       "signal"
       "opera"

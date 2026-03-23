@@ -1,0 +1,43 @@
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+personality = "pragmatic"
+plan_mode_reasoning_effort = "high"
+
+[projects."/Users/theo/.config"]
+trust_level = "trusted"
+
+[projects."/Users/theo/development/prediction_markets_poc"]
+trust_level = "trusted"
+
+[projects."/Users/theo/development/prediction_markets_poc_1"]
+trust_level = "trusted"
+
+[projects."/Users/theo/development/horizon-of-empires"]
+trust_level = "trusted"
+
+[projects."/Users/theo/development/fumble"]
+trust_level = "trusted"
+
+[projects."/Users/theo/development"]
+trust_level = "trusted"
+
+[projects."/Users/theo/development/ralph-runner-1"]
+trust_level = "trusted"
+
+[projects."/Users/theo/development/ralph-runner"]
+trust_level = "trusted"
+
+[projects."/Users/theo/gt"]
+trust_level = "trusted"
+
+[projects."/Users/theo/development/prediction_markets_poc/one"]
+trust_level = "trusted"
+
+[projects."/Users/theo/development/resy-booking-bot"]
+trust_level = "trusted"
+
+[projects."/Users/theo"]
+trust_level = "trusted"
+
+[notice.model_migrations]
+"gpt-5.2-codex" = "gpt-5.3-codex"

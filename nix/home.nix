@@ -8,6 +8,16 @@
 	home.sessionPath = [
 		"$HOME/go/bin"
 	];
+	home.file = {
+		".codex/AGENTS.md".source = ../codex/AGENTS.md;
+		".codex/LESSONS.md".source = ../codex/LESSONS.md;
+		".codex/config.toml".source = ../codex/config.toml;
+		".codex/rules/default.rules".source = ../codex/rules/default.rules;
+		".codex/skills" = {
+			source = ../codex/skills;
+			recursive = true;
+		};
+	};
 
 
 	home.packages = with pkgs; [

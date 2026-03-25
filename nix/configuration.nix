@@ -1,5 +1,12 @@
 { pkgs, lib, ... }:
 
+let
+  mkGreedyCask = name: {
+    inherit name;
+    greedy = true;
+  };
+in
+
 {
 	environment.shells = with pkgs; [ zsh ];
 
@@ -28,7 +35,7 @@
     brews = [
       "gemini-cli"
     ];
-    casks = [
+    casks = map mkGreedyCask [
       "signal"
       "opera"
       "iterm2"
@@ -41,10 +48,7 @@
       "obsidian"
       "goland"
       "intellij-idea"
-      {
-        name = "docker-desktop";
-        greedy = true;
-      }
+      "docker-desktop"
       "postman"
       "figma"
       "sf-symbols"

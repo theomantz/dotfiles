@@ -1,0 +1,20 @@
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential
+
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+
+[gpg]
+	format = "openpgp"
+
+[init]
+	defaultBranch = "main"
+
+[user]
+	email = "theo@mantz.nyc"
+	name = "theomantz"
+
+[includeIf "gitdir:~/work/"]
+	path = ~/.config/git/work.gitconfig

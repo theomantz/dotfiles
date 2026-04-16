@@ -39,6 +39,8 @@
     ```
     and so on.
     CLI tools and user programs live in `nix/home.nix` while GUI apps live in `nix/configuration.nix`.
+
+    Repo-owned config under `~/.config` is edited directly here and linked into place by Home Manager where needed. That includes `codex/`, `git/`, `gh/config.yml`, `htop/`, and `vscode/settings.json`. Machine-local state such as `gh/hosts.yml` stays ignored.
 5. Run nix build from the configuraiton directory or the nix subdirectory of the configuration directory.
 
     ```shell

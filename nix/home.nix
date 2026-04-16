@@ -19,6 +19,21 @@
 		};
 	};
 
+	home.file.".codex/config.toml".source =
+		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/codex/config.toml";
+	home.file.".config/gh/config.yml".source =
+		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/gh/config.yml";
+	home.file.".config/git/config".source =
+		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/git/config";
+	home.file.".config/git/ignore".source =
+		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/git/ignore";
+	home.file.".config/git/work.gitconfig".source =
+		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/git/work.gitconfig";
+	home.file.".config/htop/htoprc".source =
+		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/htop/htoprc";
+	home.file."Library/Application Support/Code/User/settings.json".source =
+		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/vscode/settings.json";
+
 
 	home.packages = with pkgs; [
 		awscli2
@@ -29,8 +44,10 @@
 		curl
 		docker
 		docker-compose
+		gh
 		git
 		go
+		htop
 		poppler
 		purescript
 		ripgrep
@@ -50,62 +67,17 @@
 	programs = {
 		fzf.enable = true;
 		jq.enable = true;
-		htop = {
-			enable = true;
-			settings = {
-				show_program_path = true;
-			};
-		};
 		direnv = {
 			enable = true;
 			nix-direnv = {
 				enable = true;
 			};
 		};
-			git = {
-				enable = true;
-				ignores = [".DS_Store" "node_modules/" ".direnv/"];
-				settings = {
-					credential.helper = "${
-						pkgs.git.override {withLibsecret = true;}
-					}/bin/git-credential-libsecret";
-					init.defaultBranch = "main";
-					user = {
-						name = "theomantz";
-						email = "theo@mantz.nyc";
-					};
-				};
-				includes = [
-					{
-						condition = "gitdir:~/work/";
-						contents = {
-							user = {
-								name = "theomantz-luna";
-								email = "theo@lead.bank";
-							};
-						};
-					}
-				];
-			};
-			gh = {
-				enable = true;
-				settings = {
-					aliases = {
-						co = "pr checkout";
-					};
-					accessible_colors = "disabled";
-					accessible_prompter = "disabled";
-					color_labels = "disabled";
-					git_protocol = "https";
-					prefer_editor_prompt = "disabled";
-					prompt = "enabled";
-					spinner = "enabled";
-					version = 1;
-				};
-			};
 		neovim = {
 			enable = true;
 			defaultEditor = true;
+			withPython3 = true;
+			withRuby = true;
 		};
 		zsh = {
 			enable = true;

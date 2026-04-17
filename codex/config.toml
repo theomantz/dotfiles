@@ -8,3 +8,6 @@ enabled = true
 
 [notice.model_migrations]
 "gpt-5.2-codex" = "gpt-5.3-codex"
+
+[projects."/Users/theo/.config"]
+trust_level = "trusted"

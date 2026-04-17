@@ -1,5 +1,43 @@
 { pkgs, lib, ... }:
 
+let
+  greedyCask = name: {
+    inherit name;
+    greedy = true;
+  };
+
+  autoUpgradeCasks = [
+    "signal"
+    "opera"
+    "iterm2"
+    "bitwarden"
+    "steam"
+    "google-chrome"
+    "warp"
+    "arc"
+    "amethyst"
+    "obsidian"
+    "goland"
+    "intellij-idea"
+    "docker-desktop"
+    "postman"
+    "figma"
+    "sf-symbols"
+    "discord"
+    "protonvpn"
+    "macfuse"
+    "ghostty"
+    "slack"
+    "claude"
+    "chatgpt"
+    "codex"
+  ];
+
+  pinnedCasks = [
+    "dotnet-sdk8-0-300"
+  ];
+in
+
 {
 	environment.shells = with pkgs; [ zsh ];
 
@@ -28,36 +66,14 @@
     brews = [
       "gemini-cli"
     ];
-    casks = [
-      "signal"
-      "opera"
-      "iterm2"
-      "bitwarden"
-      "steam"
-      "google-chrome"
-      "warp"
-      "arc"
-      "amethyst"
-      "obsidian"
-      "goland"
-      "intellij-idea"
-      {
-        name = "docker-desktop";
-        greedy = true;
-      }
-      "postman"
-      "figma"
-      "sf-symbols"
-      "discord"
-      "protonvpn"
-      "dotnet-sdk8-0-300"
-      "macfuse"
-      "ghostty"
-      "slack"
-      "claude"
-      "chatgpt"
-      "codex"
-    ];
+    casks =
+      # Regular apps that should stay current even when the cask disables
+      # upgrades by default.
+      (map greedyCask autoUpgradeCasks)
+      ++
+      # Versioned or intentionally pinned casks that should only change when
+      # edited here.
+      pinnedCasks;
     onActivation = {
       autoUpdate = true;
       upgrade = true;

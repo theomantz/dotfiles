@@ -7,8 +7,13 @@
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
 		darwin.url = "github:lnl7/nix-darwin";
 		darwin.inputs.nixpkgs.follows = "nixpkgs"; # ...
+		brew-src = {
+			url = "github:Homebrew/brew";
+			flake = false;
+		};
 		nix-homebrew = {
 			url = "github:zhaofengli-wip/nix-homebrew";
+			inputs.brew-src.follows = "brew-src";
 		};
 		homebrew-core = {
 			url = "github:homebrew/homebrew-core";
@@ -24,7 +29,7 @@
 		};
 	};
 
-	outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, homebrew-core, homebrew-cask, dotnet-sdk-versions }: {
+	outputs = { self, nixpkgs, home-manager, darwin, brew-src, nix-homebrew, homebrew-core, homebrew-cask, dotnet-sdk-versions }: {
 			darwinConfigurations.theo = darwin.lib.darwinSystem {
 					system = "aarch64-darwin";
 					modules = [ 

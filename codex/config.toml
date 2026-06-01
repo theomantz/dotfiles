@@ -1,4 +1,4 @@
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "high"
 personality = "pragmatic"
 plan_mode_reasoning_effort = "high"
@@ -6,8 +6,36 @@ plan_mode_reasoning_effort = "high"
 [plugins."github@openai-curated"]
 enabled = true
 
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."browser-use@openai-bundled"]
+enabled = true
+
 [notice.model_migrations]
 "gpt-5.2-codex" = "gpt-5.3-codex"
 
 [projects."/Users/theo/.config"]
 trust_level = "trusted"
+
+[projects."/Users/theo/development/prediction_markets_poc"]
+trust_level = "trusted"
+
+[marketplaces.openai-bundled]
+last_updated = "2026-05-05T23:32:26Z"
+source_type = "local"
+source = "/Users/theo/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-05-06T00:32:15Z"
+source_type = "local"
+source = "/Users/theo/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 3

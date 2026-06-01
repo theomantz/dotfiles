@@ -14,6 +14,7 @@
 /nix/backup/
 /nix/direnv/
 /nix/hosts/*.swp
+/nix/hosts/bootstrap.local.nix
 /nix/nix.conf
 /nix/texput.log
 /nix/result

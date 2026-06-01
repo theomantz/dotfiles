@@ -11,8 +11,6 @@
 	home.file = {
 		".codex/AGENTS.md".source = ../codex/AGENTS.md;
 		".codex/LESSONS.md".source = ../codex/LESSONS.md;
-		".codex/config.toml".source = ../codex/config.toml;
-		".codex/rules/default.rules".source = ../codex/rules/default.rules;
 		".codex/skills" = {
 			source = ../codex/skills;
 			recursive = true;
@@ -21,6 +19,8 @@
 
 	home.file.".codex/config.toml".source =
 		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/codex/config.toml";
+	home.file.".codex/rules/default.rules".source =
+		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/codex/rules/default.rules";
 	home.file.".config/gh/config.yml".source =
 		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/gh/config.yml";
 	home.file.".config/git/config".source =
@@ -69,6 +69,9 @@
 		jq.enable = true;
 		direnv = {
 			enable = true;
+			package = pkgs.direnv.overrideAttrs (_: {
+				doCheck = false;
+			});
 			nix-direnv = {
 				enable = true;
 			};

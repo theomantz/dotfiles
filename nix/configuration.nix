@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, profile ? "personal", ... }:
 
 let
   greedyCask = name: {
@@ -6,12 +6,9 @@ let
     greedy = true;
   };
 
-  autoUpgradeCasks = [
-    "signal"
-    "opera"
+  alwaysInstalledCasks = [
     "iterm2"
     "bitwarden"
-    "steam"
     "google-chrome"
     "warp"
     "arc"
@@ -23,8 +20,6 @@ let
     "postman"
     "figma"
     "sf-symbols"
-    "discord"
-    "protonvpn"
     "macfuse"
     "ghostty"
     "slack"
@@ -32,6 +27,18 @@ let
     "chatgpt"
     "codex"
   ];
+
+  personalOnlyCasks = [
+    "signal"
+    "opera"
+    "steam"
+    "discord"
+    "protonvpn"
+  ];
+
+  autoUpgradeCasks =
+    alwaysInstalledCasks
+    ++ lib.optionals (profile != "work") personalOnlyCasks;
 
   pinnedCasks = [
     "dotnet-sdk8-0-300"

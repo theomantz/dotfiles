@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ...}:
+{ config, pkgs, lib, configurationName, ...}:
 {
 
 	programs.home-manager = {
@@ -7,6 +7,7 @@
 	home.stateVersion = "22.05";
 	home.sessionPath = [
 		"$HOME/go/bin"
+		"/run/current-system/sw/bin"
 	];
 	home.file = {
 		".codex/AGENTS.md".source = ../codex/AGENTS.md;
@@ -88,6 +89,7 @@
 			autosuggestion.enable = true;
 			enableCompletion = true;
 			shellAliases = {
+				drs = "sudo /run/current-system/sw/bin/darwin-rebuild switch --flake ${config.home.homeDirectory}/.config/nix#${configurationName}";
 				ls = "ls -la";
 				vim = "nvim";
 				vi = "nvim";

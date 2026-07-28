@@ -182,3 +182,10 @@ Track repo-specific lessons in each repo's local `LESSONS.md`.
 - Root cause: `status` is a special read-only parameter in zsh.
 - Fix: use a different variable name (for example, `check_status`) or run the script under bash.
 - Prevention: avoid using `status` as a variable name in zsh automation snippets.
+
+### 2026-07-28 - Worktrees and project memory stay under the project root
+- Context: global task topology guidance after a dotfiles workflow correction.
+- Symptom: task worktrees were created as sibling or top-level `wt_*` directories, and repo-local memory could drift into tool-specific config directories.
+- Root cause: workflow guidance named worktrees but did not specify the project-root `worktrees/` parent or the required root location for project memory.
+- Fix: use `<project>/worktrees/<task-or-branch-name>` for task worktrees and keep project-local lessons/memory as root-level files such as `<project>/LESSONS.md` and `<project>/MEMORY.md`.
+- Prevention: when starting a task, identify the project root first, create the task worktree inside its `worktrees/` directory, and read/update only root-level project memory files plus global `~/.codex/LESSONS.md`.

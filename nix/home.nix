@@ -92,6 +92,9 @@
 			defaultEditor = true;
 			withPython3 = true;
 			withRuby = true;
+			initLua = ''
+				require("config.lazy")
+			'';
 		};
 		zsh = {
 			enable = true;

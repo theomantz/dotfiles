@@ -1,4 +1,4 @@
-{ pkgs, lib, profile ? "personal", ... }:
+{ config, pkgs, lib, profile ? "personal", ... }:
 
 let
   greedyCask = name: {
@@ -14,8 +14,6 @@ let
     "arc"
     "amethyst"
     "obsidian"
-    "goland"
-    "intellij-idea"
     "docker-desktop"
     "postman"
     "figma"
@@ -31,7 +29,6 @@ let
   personalOnlyCasks = [
     "signal"
     "opera"
-    "steam"
     "discord"
     "protonvpn"
   ];
@@ -40,9 +37,10 @@ let
     alwaysInstalledCasks
     ++ lib.optionals (profile != "work") personalOnlyCasks;
 
-  pinnedCasks = [
-    "dotnet-sdk8-0-300"
-  ];
+  trustedCaskConfig = ''
+    # nix-darwin does not expose Homebrew Bundle's `trusted` cask option yet.
+    cask "isen-ng/dotnet-sdk-versions/dotnet-sdk8-0-300", greedy: true, trusted: true
+  '';
 in
 
 {
@@ -73,13 +71,26 @@ in
     brews = [
       "gemini-cli"
     ];
-    casks = map greedyCask (autoUpgradeCasks ++ pinnedCasks);
+    casks = map greedyCask autoUpgradeCasks;
+    extraConfig = trustedCaskConfig;
     onActivation = {
       autoUpdate = true;
       upgrade = true;
       cleanup = "uninstall";
     };
   };
+
+  system.activationScripts.homebrew.text = lib.mkOrder 750 ''
+    if [ -f "${config.homebrew.prefix}/bin/brew" ]; then
+      PATH="${config.homebrew.prefix}/bin:$PATH" \
+      sudo \
+        --preserve-env=PATH \
+        --user=${lib.escapeShellArg config.homebrew.user} \
+        --set-home \
+        env \
+        brew trust --quiet --tap isen-ng/dotnet-sdk-versions
+    fi
+  '';
 
   fonts.packages = [
     pkgs.nerd-fonts.jetbrains-mono

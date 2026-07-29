@@ -2,6 +2,8 @@ model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 personality = "pragmatic"
 plan_mode_reasoning_effort = "high"
+approval_policy = "never"
+default_permissions = ":workspace"
 
 
 notify = ["/Users/theo/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]

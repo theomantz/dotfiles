@@ -103,6 +103,11 @@
 				host = theoHost;
 				profile = "personal";
 			};
+			theo-2 = mkDarwinConfiguration {
+				configurationName = "theo-2";
+				host = theoHost;
+				profile = "personal";
+			};
 			work = mkDarwinConfiguration {
 				configurationName = "work";
 				host = workHost;

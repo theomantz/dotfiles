@@ -22,16 +22,26 @@
 		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/codex/config.toml";
 	home.file.".codex/rules/default.rules".source =
 		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/codex/rules/default.rules";
-	home.file.".config/gh/config.yml".source =
-		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/gh/config.yml";
-	home.file.".config/git/config".source =
-		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/git/config";
-	home.file.".config/git/ignore".source =
-		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/git/ignore";
-	home.file.".config/git/work.gitconfig".source =
-		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/git/work.gitconfig";
-	home.file.".config/htop/htoprc".source =
-		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/htop/htoprc";
+	home.file.".config/gh/config.yml" = {
+		source = ./files/gh/config.yml;
+		force = true;
+	};
+	home.file.".config/git/config" = {
+		source = ./files/git/config;
+		force = true;
+	};
+	home.file.".config/git/ignore" = {
+		source = ./files/git/ignore;
+		force = true;
+	};
+	home.file.".config/git/work.gitconfig" = {
+		source = ./files/git/work.gitconfig;
+		force = true;
+	};
+	home.file.".config/htop/htoprc" = {
+		source = ./files/htop/htoprc;
+		force = true;
+	};
 	home.file."Library/Application Support/Code/User/settings.json".source =
 		config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/vscode/settings.json";
 

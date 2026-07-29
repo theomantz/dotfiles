@@ -339,3 +339,8 @@ prefix_rule(pattern=["poetry", "run", "basedpyright"], decision="allow", justifi
 prefix_rule(pattern=["poetry", "run", "black", "--check"], decision="allow", justification="Formatting checks are a routine validation action.")
 prefix_rule(pattern=["poetry", "run", "isort", "--check-only"], decision="allow", justification="Formatting checks are a routine validation action.")
 prefix_rule(pattern=["git", "push", "--force-with-lease"], decision="allow")
+prefix_rule(pattern=["cp", "/Users/theo/.config/gh/config.yml.backup", "/Users/theo/.config/gh/config.yml"], decision="allow")
+prefix_rule(pattern=["cp", "/Users/theo/.config/nvim/init.lua.backup", "/Users/theo/.config/nvim/init.lua"], decision="allow")
+prefix_rule(pattern=["cp", "/Users/theo/.config/htop/htoprc.backup", "/Users/theo/.config/htop/htoprc"], decision="allow")
+prefix_rule(pattern=["git", "clone"], decision="allow")
+prefix_rule(pattern=["git", "fetch"], decision="allow")

@@ -32,6 +32,13 @@ Use this format:
 - Fix: manage `config.toml` and `rules/default.rules` together, and treat the rules file as the durable source of truth for allow/deny behavior
 - Prevention: when migrating or backing up Codex settings, always include the `rules/` directory rather than assuming approvals are embedded in `config.toml`
 
+### 2026-03-24 - Prefix rules cannot safely express semantic allowlists
+- Context: dotfiles task to expand Codex approvals for AWS CLI usage
+- Symptom: request was to allow all non-destructive `aws` commands, but the rule engine only matched literal command-token prefixes
+- Root cause: `prefix_rule(...)` does not understand higher-level semantics like “read-only” or broad verb classes across every AWS service
+- Fix: add an explicit read-only allowlist for common AWS CLI commands instead of allowing `aws` broadly
+- Prevention: when approval policy depends on command semantics rather than exact prefixes, prefer curated safe command families over broad program-level allow rules
+
 ### 2026-03-15 - Quote extras specifiers in zsh pip installs
 - Context: prediction_markets_poc backend validation from a disposable venv
 - Symptom: `python -m pip install -e /path/to/backend[dev]` failed with `zsh: no matches found`
@@ -196,3 +203,10 @@ Track repo-specific lessons in each repo's local `LESSONS.md`.
 - Root cause: workflow guidance named worktrees but did not specify the project-root `worktrees/` parent or the required root location for project memory.
 - Fix: use `<project>/worktrees/<task-or-branch-name>` for task worktrees and keep project-local lessons/memory as root-level files such as `<project>/LESSONS.md` and `<project>/MEMORY.md`.
 - Prevention: when starting a task, identify the project root first, create the task worktree inside its `worktrees/` directory, and read/update only root-level project memory files plus global `~/.codex/LESSONS.md`.
+
+### 2026-07-28 - Build dotfiles only from the canonical checkout
+- Context: dotfiles PR conflict validation from a task worktree.
+- Symptom: `nix build` was run against a temporary conflict-resolution checkout.
+- Root cause: worktree source paths are not the canonical dotfiles source used for system builds.
+- Fix: use task worktrees for conflict resolution and lightweight checks only; run any required `nix build` from the canonical dotfiles checkout.
+- Prevention: before running build commands in this repo, confirm the working directory is the canonical dotfiles source rather than a `wt_*` task directory.

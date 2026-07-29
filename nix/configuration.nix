@@ -39,7 +39,7 @@ let
 
   trustedCaskConfig = ''
     # nix-darwin does not expose Homebrew Bundle's `trusted` cask option yet.
-    cask "isen-ng/dotnet-sdk-versions/dotnet-sdk8-0-300", trusted: true
+    cask "isen-ng/dotnet-sdk-versions/dotnet-sdk8-0-300", greedy: true, trusted: true
   '';
 in
 

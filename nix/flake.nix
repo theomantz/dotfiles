@@ -31,7 +31,7 @@
 
 	outputs = { self, nixpkgs, home-manager, darwin, brew-src, nix-homebrew, homebrew-core, homebrew-cask, dotnet-sdk-versions }:
 	let
-		mkDarwinConfiguration = { host, profile }:
+		mkDarwinConfiguration = { configurationName, host, profile }:
 			let
 				username = host.username;
 				homeDirectory = host.homeDirectory;
@@ -41,7 +41,7 @@
 			darwin.lib.darwinSystem {
 				system = hostPlatform;
 				specialArgs = {
-					inherit profile;
+					inherit configurationName profile;
 				};
 				modules = [
 					nix-homebrew.darwinModules.nix-homebrew
@@ -74,6 +74,9 @@
 							useGlobalPkgs = true;
 							useUserPackages = true;
 							backupFileExtension = "backup";
+							extraSpecialArgs = {
+								inherit configurationName;
+							};
 							users = {
 								${username} = import ./home.nix;
 							};
@@ -91,22 +94,27 @@
 	in {
 		darwinConfigurations = {
 			personal = mkDarwinConfiguration {
+				configurationName = "personal";
 				host = theoHost;
 				profile = "personal";
 			};
 			theo = mkDarwinConfiguration {
+				configurationName = "theo";
 				host = theoHost;
 				profile = "personal";
 			};
 			work = mkDarwinConfiguration {
+				configurationName = "work";
 				host = workHost;
 				profile = "work";
 			};
 			bootstrap-personal = mkDarwinConfiguration {
+				configurationName = "bootstrap-personal";
 				host = bootstrapHost;
 				profile = "personal";
 			};
 			bootstrap-work = mkDarwinConfiguration {
+				configurationName = "bootstrap-work";
 				host = bootstrapHost;
 				profile = "work";
 			};

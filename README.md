@@ -76,5 +76,13 @@ Apply the configuration from `~/.config/nix`.
     ./result/sw/bin/darwin-rebuild switch --flake .
     ```
 
+After the first successful activation, new shells include nix-darwin's current-system bin path and provide:
+
+    ```shell
+    drs
+    ```
+
+which runs `sudo /run/current-system/sw/bin/darwin-rebuild switch --flake ~/.config/nix#<configuration-name>`.
+
 
     

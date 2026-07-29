@@ -1,10 +1,48 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, profile ? "personal", ... }:
 
 let
-  mkGreedyCask = name: {
+  greedyCask = name: {
     inherit name;
     greedy = true;
   };
+
+  alwaysInstalledCasks = [
+    "iterm2"
+    "bitwarden"
+    "google-chrome"
+    "warp"
+    "arc"
+    "amethyst"
+    "obsidian"
+    "goland"
+    "intellij-idea"
+    "docker-desktop"
+    "postman"
+    "figma"
+    "sf-symbols"
+    "macfuse"
+    "ghostty"
+    "slack"
+    "claude"
+    "chatgpt"
+    "codex"
+  ];
+
+  personalOnlyCasks = [
+    "signal"
+    "opera"
+    "steam"
+    "discord"
+    "protonvpn"
+  ];
+
+  autoUpgradeCasks =
+    alwaysInstalledCasks
+    ++ lib.optionals (profile != "work") personalOnlyCasks;
+
+  pinnedCasks = [
+    "dotnet-sdk8-0-300"
+  ];
 in
 
 {
@@ -35,33 +73,7 @@ in
     brews = [
       "gemini-cli"
     ];
-    casks = map mkGreedyCask [
-      "signal"
-      "opera"
-      "iterm2"
-      "bitwarden"
-      "steam"
-      "google-chrome"
-      "warp"
-      "arc"
-      "amethyst"
-      "obsidian"
-      "goland"
-      "intellij-idea"
-      "docker-desktop"
-      "postman"
-      "figma"
-      "sf-symbols"
-      "discord"
-      "protonvpn"
-      "dotnet-sdk8-0-300"
-      "macfuse"
-      "ghostty"
-      "slack"
-      "claude"
-      "chatgpt"
-      "codex"
-    ];
+    casks = map greedyCask (autoUpgradeCasks ++ pinnedCasks);
     onActivation = {
       autoUpdate = true;
       upgrade = true;

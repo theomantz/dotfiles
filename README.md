@@ -1,53 +1,88 @@
 
-# Nix managed macOS Configuration using nix, home-manager, and nix-darwin
+# Nix managed macOS configuration using Nix, Home Manager, and nix-darwin
 
-### Steps to rebuild
- 1. Create a directory within the user home directory which will house the configuration files and clone the repository.
+### Bootstrap
+ 1. Clone the repository into `~/.config`.
         
     ```shell
-    cd ~ && mkdir .config && gh repo clone dotfiles ~/.config
+    git clone git@github.com:theomantz/dotfiles.git ~/.config
     ```
 
- 2. If the computer being set up is completely fresh `xcode-select` may need to be installed.
-   
+ 2. Run the bootstrap script with the desired profile.
+
     ```shell
-    xcode-select --install
+    cd ~/.config
+    ./scripts/bootstrap-macos --profile personal
     ```
 
-3. Download and install [nix](https://nixos.org/download#nix-install-macos):
+    For a work machine that should omit personal casks such as `discord`, use:
+
     ```shell
-    sh <(curl -L https://nixos.org/nix/install)
+    cd ~/.config
+    ./scripts/bootstrap-macos --profile work
     ```
 
-4. Edit the files within the configurations so that the configured system architecture matches the actual architecture of the system, the configured system name matches matches the actual system name, and the configured user home directory matches the actual user home directory.
+    The script will:
+    - install Xcode command line tools if needed
+    - install Nix if needed
+    - detect the current macOS username and home directory
+    - generate a local bootstrap host descriptor
+    - build the selected nix-darwin profile
+    - switch the machine to that configuration
+
+### Profiles
+- `personal`: full app set
+- `work`: excludes personal-only casks such as `discord`, `steam`, `signal`, `opera`, and `protonvpn`
+
+### Manual rebuild
+If the target machine does not match the values currently checked in, edit the configuration first.
 
     ```shell
-    # make sure the following example parameters match the system attributes
-    # in flake.nix
-    darwinConfigurations.<name> = darwin.lib.system {
+    # in nix/flake.nix
+    darwinConfigurations.<name> = darwin.lib.darwinSystem {
         system = "<system_architecture>"
         ... remaining configuration
     }
 
-    # in hosts/<name>.nix
-    nixpkgs.hostPlatform = "<system_architecture>"
-    users.users.<user>.home = "<user_home_dir>"
-    system.primaryUser = "<user>"
+    # in nix/hosts/<name>.nix
+    username = "<user>"
+    homeDirectory = "<user_home_dir>"
+    hostPlatform = "<system_architecture>"
 
-    # in configuration.nix
+    # in nix/configuration.nix
     # keep system defaults and GUI apps here
     ```
-    and so on.
-    CLI tools and user programs live in `nix/home.nix` while GUI apps live in `nix/configuration.nix`.
-5. Run nix build from the configuraiton directory or the nix subdirectory of the configuration directory.
+    CLI tools and user programs live in `nix/home.nix` while GUI apps and macOS defaults live in `nix/configuration.nix`.
+
+    Repo-owned config under `~/.config` is edited directly here and linked into place by Home Manager where needed. That includes `codex/`, `git/`, `gh/config.yml`, `htop/`, and `vscode/settings.json`. Machine-local state such as `gh/hosts.yml` stays ignored.
+Build the system from the repo root or point Nix at the `nix/` flake explicitly.
+
+    ```shell
+    cd ~/.config
+    nix build --stack-trace --extra-experimental-features 'nix-command flakes' ./nix#darwinConfigurations.theo.system
+    ```
+    If you are already in `~/.config/nix`, the equivalent command is:
 
     ```shell
     nix build --stack-trace --extra-experimental-features 'nix-command flakes' .#darwinConfigurations.theo.system
     ```
-    **note**: `--extra-experimental-features` will only need to be added once. After the first build, its added to `nix.conf` and is no longer needed as a flag to the `nix build` command.
 
-5. Run `./result/sw/bin/darwin-rebuild switch --flake .` from within the `nix` subdirectory of the `~/.config` directory.
-6. Enjoy!
+    Note: `--extra-experimental-features` only needs to be added until Nix has been configured with `nix-command` and `flakes`.
+
+Apply the configuration from `~/.config/nix`.
+
+    ```shell
+    cd ~/.config/nix
+    ./result/sw/bin/darwin-rebuild switch --flake .
+    ```
+
+After the first successful activation, new shells include nix-darwin's current-system bin path and provide:
+
+    ```shell
+    drs
+    ```
+
+which runs `sudo /run/current-system/sw/bin/darwin-rebuild switch --flake ~/.config/nix#<configuration-name>`.
 
 
     

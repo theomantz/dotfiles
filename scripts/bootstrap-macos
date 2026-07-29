@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: ./scripts/bootstrap-macos [--profile personal|work]
+
+Bootstraps this dotfiles repo onto a macOS machine:
+  - verifies Xcode command line tools
+  - installs Nix if needed
+  - builds the selected nix-darwin profile
+  - switches the machine to that configuration
+
+Profiles:
+  personal  Full app set
+  work      Work-focused app set with personal casks omitted
+EOF
+}
+
+profile="personal"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --profile)
+      profile="${2:-}"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+done
+
+case "$profile" in
+  personal|work) ;;
+  *)
+    echo "Unsupported profile: $profile" >&2
+    usage >&2
+    exit 1
+    ;;
+esac
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+nix_dir="$repo_root/nix"
+bootstrap_host_file="$nix_dir/hosts/bootstrap.local.nix"
+
+source_nix_env() {
+  if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
+    # shellcheck disable=SC1091
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  elif [[ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
+    # shellcheck disable=SC1091
+    . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+  fi
+}
+
+write_bootstrap_host() {
+  local username home_directory host_platform
+  username="$(id -un)"
+  home_directory="$HOME"
+  host_platform="$(uname -m)-darwin"
+
+  cat > "$bootstrap_host_file" <<EOF
+{
+  username = "${username}";
+  homeDirectory = "${home_directory}";
+  hostPlatform = "${host_platform}";
+  stateVersion = 5;
+}
+EOF
+}
+
+if ! xcode-select -p >/dev/null 2>&1; then
+  echo "Installing Xcode command line tools..."
+  xcode-select --install || true
+  echo "Finish the Xcode command line tools install, then rerun this script."
+  exit 1
+fi
+
+if ! command -v nix >/dev/null 2>&1; then
+  echo "Installing Nix..."
+  sh <(curl -L https://nixos.org/nix/install)
+fi
+
+source_nix_env
+
+if ! command -v nix >/dev/null 2>&1; then
+  echo "Nix is not available in the current shell after installation." >&2
+  echo "Open a new shell or source the Nix profile, then rerun this script." >&2
+  exit 1
+fi
+
+write_bootstrap_host
+
+target="bootstrap-${profile}"
+
+echo "Building nix-darwin profile '$target'..."
+cd "$nix_dir"
+nix build --extra-experimental-features 'nix-command flakes' ".#darwinConfigurations.${target}.system"
+
+echo "Applying nix-darwin profile '$target'..."
+sudo ./result/sw/bin/darwin-rebuild switch --flake ".#${target}"

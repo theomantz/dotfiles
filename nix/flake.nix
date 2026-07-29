@@ -7,8 +7,13 @@
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
 		darwin.url = "github:lnl7/nix-darwin";
 		darwin.inputs.nixpkgs.follows = "nixpkgs"; # ...
+		brew-src = {
+			url = "github:Homebrew/brew";
+			flake = false;
+		};
 		nix-homebrew = {
 			url = "github:zhaofengli-wip/nix-homebrew";
+			inputs.brew-src.follows = "brew-src";
 		};
 		homebrew-core = {
 			url = "github:homebrew/homebrew-core";
@@ -24,34 +29,95 @@
 		};
 	};
 
-	outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, homebrew-core, homebrew-cask, dotnet-sdk-versions }: {
-			darwinConfigurations.theo = darwin.lib.darwinSystem {
-					system = "aarch64-darwin";
-					modules = [ 
-						nix-homebrew.darwinModules.nix-homebrew {
+	outputs = { self, nixpkgs, home-manager, darwin, brew-src, nix-homebrew, homebrew-core, homebrew-cask, dotnet-sdk-versions }:
+	let
+		mkDarwinConfiguration = { configurationName, host, profile }:
+			let
+				username = host.username;
+				homeDirectory = host.homeDirectory;
+				hostPlatform = host.hostPlatform;
+				stateVersion = host.stateVersion;
+			in
+			darwin.lib.darwinSystem {
+				system = hostPlatform;
+				specialArgs = {
+					inherit configurationName profile;
+				};
+				modules = [
+					nix-homebrew.darwinModules.nix-homebrew
+					{
 						nix-homebrew = {
 							enable = true;
-							user = "theo";
-								taps = {
-									"homebrew/homebrew-core" = homebrew-core;
-									"homebrew/homebrew-cask" = homebrew-cask;
-									"isen-ng/homebrew-dotnet-sdk-versions" = dotnet-sdk-versions;
-								};
+							user = username;
+							taps = {
+								"homebrew/homebrew-core" = homebrew-core;
+								"homebrew/homebrew-cask" = homebrew-cask;
+								"isen-ng/homebrew-dotnet-sdk-versions" = dotnet-sdk-versions;
 							};
+						};
 					}
-					home-manager.darwinModules.home-manager {
+					({ pkgs, ... }: {
+						system.stateVersion = stateVersion;
+						ids.gids.nixbld = 30000;
+						nixpkgs.hostPlatform = hostPlatform;
+
+						users.users.${username} = {
+							home = homeDirectory;
+							shell = pkgs.zsh;
+						};
+
+						system.primaryUser = username;
+					})
+					home-manager.darwinModules.home-manager
+					{
 						home-manager = {
 							useGlobalPkgs = true;
 							useUserPackages = true;
 							backupFileExtension = "backup";
+							extraSpecialArgs = {
+								inherit configurationName;
+							};
 							users = {
-								theo = import ./home.nix;
+								${username} = import ./home.nix;
 							};
 						};
-						}
-						./configuration.nix
-						./hosts/theo.nix
-					];
+					}
+					./configuration.nix
+				];
+			};
+		theoHost = import ./hosts/theo.nix;
+		workHost = import ./hosts/work.nix;
+		bootstrapHost =
+			if builtins.pathExists ./hosts/bootstrap.local.nix
+			then import ./hosts/bootstrap.local.nix
+			else import ./hosts/bootstrap.nix;
+	in {
+		darwinConfigurations = {
+			personal = mkDarwinConfiguration {
+				configurationName = "personal";
+				host = theoHost;
+				profile = "personal";
+			};
+			theo = mkDarwinConfiguration {
+				configurationName = "theo";
+				host = theoHost;
+				profile = "personal";
+			};
+			work = mkDarwinConfiguration {
+				configurationName = "work";
+				host = workHost;
+				profile = "work";
+			};
+			bootstrap-personal = mkDarwinConfiguration {
+				configurationName = "bootstrap-personal";
+				host = bootstrapHost;
+				profile = "personal";
+			};
+			bootstrap-work = mkDarwinConfiguration {
+				configurationName = "bootstrap-work";
+				host = bootstrapHost;
+				profile = "work";
 			};
 		};
+	};
 }

@@ -18,6 +18,13 @@ Use this format:
 
 ## Global Lessons
 
+### 2026-07-28 - Approval rules are prefix-only and do not safely express middle wildcards
+- Context: dotfiles Codex command allowlist update
+- Symptom: trivial read-only commands could still prompt for approval when written with wrapper or path-selection forms like `git -C /path status`.
+- Root cause: persisted `prefix_rule` entries match leading argv tokens only; broad prefixes such as `git -C`, `bash -lc`, `python -c`, or `nix develop -c` would also allow destructive payloads.
+- Fix: add concrete safe prefixes for common read-only and validation commands, and prefer setting the exec working directory over using `git -C`.
+- Prevention: when a safe command prompts, add the narrowest leading-token rule that cannot be turned into a destructive command; avoid broad wrappers that hide the real operation from the matcher.
+
 ### 2026-03-23 - Codex persistent approvals live in `rules/default.rules`
 - Context: dotfiles task to version-control Codex approvals and settings
 - Symptom: `config.toml` did not contain the approved command prefix history that actually controlled prompt behavior
@@ -189,3 +196,17 @@ Track repo-specific lessons in each repo's local `LESSONS.md`.
 - Root cause: `status` is a special read-only parameter in zsh.
 - Fix: use a different variable name (for example, `check_status`) or run the script under bash.
 - Prevention: avoid using `status` as a variable name in zsh automation snippets.
+
+### 2026-07-28 - Worktrees and project memory stay under the project root
+- Context: global task topology guidance after a dotfiles workflow correction.
+- Symptom: task worktrees were created as sibling or top-level `wt_*` directories, and repo-local memory could drift into tool-specific config directories.
+- Root cause: workflow guidance named worktrees but did not specify the project-root `worktrees/` parent or the required root location for project memory.
+- Fix: use `<project>/worktrees/<task-or-branch-name>` for task worktrees and keep project-local lessons/memory as root-level files such as `<project>/LESSONS.md` and `<project>/MEMORY.md`.
+- Prevention: when starting a task, identify the project root first, create the task worktree inside its `worktrees/` directory, and read/update only root-level project memory files plus global `~/.codex/LESSONS.md`.
+
+### 2026-07-28 - Build dotfiles only from the canonical checkout
+- Context: dotfiles PR conflict validation from a task worktree.
+- Symptom: `nix build` was run against a temporary conflict-resolution checkout.
+- Root cause: worktree source paths are not the canonical dotfiles source used for system builds.
+- Fix: use task worktrees for conflict resolution and lightweight checks only; run any required `nix build` from the canonical dotfiles checkout.
+- Prevention: before running build commands in this repo, confirm the working directory is the canonical dotfiles source rather than a `wt_*` task directory.

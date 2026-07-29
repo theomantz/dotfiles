@@ -18,6 +18,13 @@ Use this format:
 
 ## Global Lessons
 
+### 2026-07-28 - Approval rules are prefix-only and do not safely express middle wildcards
+- Context: dotfiles Codex command allowlist update
+- Symptom: trivial read-only commands could still prompt for approval when written with wrapper or path-selection forms like `git -C /path status`.
+- Root cause: persisted `prefix_rule` entries match leading argv tokens only; broad prefixes such as `git -C`, `bash -lc`, `python -c`, or `nix develop -c` would also allow destructive payloads.
+- Fix: add concrete safe prefixes for common read-only and validation commands, and prefer setting the exec working directory over using `git -C`.
+- Prevention: when a safe command prompts, add the narrowest leading-token rule that cannot be turned into a destructive command; avoid broad wrappers that hide the real operation from the matcher.
+
 ### 2026-03-23 - Codex persistent approvals live in `rules/default.rules`
 - Context: dotfiles task to version-control Codex approvals and settings
 - Symptom: `config.toml` did not contain the approved command prefix history that actually controlled prompt behavior

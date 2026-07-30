@@ -18,6 +18,13 @@ Use this format:
 
 ## Global Lessons
 
+### 2026-07-30 - Approval rules should optimize for pragmatic guardrails
+- Context: dotfiles Codex approval-rule maintenance
+- Symptom: exact command-prefix approvals accumulated many one-off rows, especially for routine Git workflow, and the rules file kept changing during normal work.
+- Root cause: treating prefix rules like a perfect semantic allowlist does not scale; the matcher is simple, and exhaustive command lists create friction without delivering airtight safety.
+- Fix: prefer broad rules for the common reversible 90% workflow, with explicit forbids for obvious high-risk or non-reversible destructive forms.
+- Prevention: before adding narrow approval rows, ask whether a durable workflow-level rule plus a small denylist would provide better day-to-day guardrails.
+
 ### 2026-07-28 - Approval rules are prefix-only and do not safely express middle wildcards
 - Context: dotfiles Codex command allowlist update
 - Symptom: trivial read-only commands could still prompt for approval when written with wrapper or path-selection forms like `git -C /path status`.

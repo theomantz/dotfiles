@@ -6,3 +6,10 @@
 - Root cause: enabling `programs.neovim` makes Home Manager own `nvim/init.lua`; the existing standalone `nvim/init.lua` entrypoint was backed up and no longer loaded.
 - Fix: put `require("config.lazy")` in `programs.neovim.initLua` so Home Manager's generated init keeps provider setup and loads the repo's LazyVim config tree.
 - Prevention: when adding Home Manager ownership for tools that already have config under this repo, check whether Home Manager generates the same target files and include any required local entrypoints in the generated config.
+
+### 2026-07-29 - Do not track Home Manager generated live targets
+- Context: dotfiles repo located at `~/.config`
+- Symptom: after `darwin-rebuild switch`, files such as `gh/config.yml`, `git/config`, `htop/htoprc`, and `nvim/init.lua` showed as type changes because Home Manager replaced tracked files with store symlinks and wrote `.backup` files.
+- Root cause: the repo tracked live paths that Home Manager also manages under `$HOME/.config`; in this layout those live paths are inside the repo checkout.
+- Fix: keep source files under Nix-owned source paths such as `nix/files/...`, untrack the generated live targets, and ignore the generated symlinks plus activation backups.
+- Prevention: before adding a tracked dotfile under this repo root, check whether Home Manager will manage the same `$HOME/.config/...` target.

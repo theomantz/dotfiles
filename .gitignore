@@ -4,8 +4,18 @@
 /direnv/
 /gh/hosts.yml
 /gh/hosts.yml.backup
+/gh/config.yml
+/gh/config.yml.backup
 /github-copilot/
+/git/config
+/git/config.backup
+/git/ignore
+/git/ignore.backup
+/git/work.gitconfig
+/git/work.gitconfig.backup
 /htop.backup/
+/htop/htoprc
+/htop/htoprc.backup
 /iterm2/
 /jgit/
 /vscode/snippets/
@@ -19,6 +29,8 @@
 /nix/texput.log
 /nix/result
 /nix/result-*
+/nvim/init.lua
+/nvim/init.lua.backup
 /nvim/lazyvim.json
 /result
 /result-*

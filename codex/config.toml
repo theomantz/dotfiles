@@ -2,8 +2,13 @@ model = "gpt-5.6-sol"
 model_reasoning_effort = "xhigh"
 personality = "pragmatic"
 plan_mode_reasoning_effort = "high"
-approval_policy = "never"
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+approvals_reviewer = "auto_review"
 default_permissions = ":workspace"
+
+[sandbox_workspace_write]
+network_access = true
 
 
 notify = ["/Users/theo/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]

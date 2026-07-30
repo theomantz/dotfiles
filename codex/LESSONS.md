@@ -25,6 +25,13 @@ Use this format:
 - Fix: prefer broad rules for the common reversible 90% workflow, with explicit forbids for obvious high-risk or non-reversible destructive forms.
 - Prevention: before adding narrow approval rows, ask whether a durable workflow-level rule plus a small denylist would provide better day-to-day guardrails.
 
+### 2026-07-30 - Local Codex defaults should stay interactive but low-friction
+- Context: dotfiles Codex runtime config
+- Symptom: sessions launched with `approval_policy = "never"` could not request elevated permissions, and MCP/app connector startup failures could not surface interactive recovery prompts.
+- Root cause: `never` is appropriate for unattended automation, not normal local agent work where Codex needs a path to request sandbox, network, or MCP/app approvals.
+- Fix: use `sandbox_mode = "workspace-write"`, `approval_policy = "on-request"`, `approvals_reviewer = "auto_review"`, and enable workspace sandbox network access for this personal local setup.
+- Prevention: do not switch the default local profile back to `approval_policy = "never"`; use a separate profile or one-off CLI flag for non-interactive automation.
+
 ### 2026-07-28 - Approval rules are prefix-only and do not safely express middle wildcards
 - Context: dotfiles Codex command allowlist update
 - Symptom: trivial read-only commands could still prompt for approval when written with wrapper or path-selection forms like `git -C /path status`.

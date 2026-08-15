@@ -10,6 +10,7 @@ let
     "iterm2"
     "bitwarden"
     "1password"
+    "caffeine"
     "google-chrome"
     "warp"
     "arc"

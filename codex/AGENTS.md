@@ -40,6 +40,13 @@ If a repo has its own `AGENTS.md`, follow the stricter rule when there is overla
 
 - Worktree location/naming: `<project>/worktrees/<short-task-name>` (for example, `project/worktrees/feat-some-feature`).
 - Branch naming: `feat/<short-task-name>`, `fix/<short-task-name>`, or `chore/<short-task-name>`.
+- On macOS, request escalated sandbox permissions from the start for authenticated
+  `gh` commands. GitHub CLI credentials live in the login Keychain, which the
+  workspace sandbox cannot read. Do not interpret an in-sandbox authentication
+  failure as an expired token; retry the same read-only check outside the sandbox.
+- Let persistent command rules and Auto-review decide whether an escalated `gh`
+  command is allowed. Do not copy the Keychain token into an environment variable
+  or plaintext config to bypass the sandbox.
 - Never commit directly to `main`; always use a branch and PR.
 - Keep PRs focused: one logical change per PR unless explicitly coordinating a stacked series.
 - Before opening a PR, verify the branch is up to date with its base and conflict-free.

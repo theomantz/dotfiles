@@ -18,6 +18,21 @@ Use this format:
 
 ## Global Lessons
 
+### 2026-08-15 - Keyring-backed GitHub CLI calls require sandbox escalation on macOS
+- Context: Parkwalk issue triage from a local Codex session
+- Symptom: `gh auth status` reported that the active token was invalid inside the
+  Codex workspace sandbox even though the same account was authenticated in the
+  interactive terminal.
+- Root cause: GitHub CLI stored the token in the macOS login Keychain under
+  `gh:github.com`; the Seatbelt sandbox could read the stub `hosts.yml` but could
+  not access the Keychain item.
+- Fix: request escalated sandbox permissions before running authenticated `gh`
+  commands. Existing `allow` rules can approve safe command prefixes without a
+  prompt, while Auto-review evaluates the remaining escalation requests.
+- Prevention: do not recommend reauthentication based only on an in-sandbox
+  failure. Compare the same metadata-only command outside the sandbox, and never
+  expose or persist the Keychain token as a workaround.
+
 ### 2026-07-30 - Approval rules should optimize for pragmatic guardrails
 - Context: dotfiles Codex approval-rule maintenance
 - Symptom: exact command-prefix approvals accumulated many one-off rows, especially for routine Git workflow, and the rules file kept changing during normal work.

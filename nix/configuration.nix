@@ -9,6 +9,7 @@ let
   alwaysInstalledCasks = [
     "iterm2"
     "bitwarden"
+    "1password"
     "google-chrome"
     "warp"
     "arc"

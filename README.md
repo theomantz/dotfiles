@@ -84,5 +84,44 @@ After the first successful activation, new shells include nix-darwin's current-s
 
 which runs `sudo /run/current-system/sw/bin/darwin-rebuild switch --flake ~/.config/nix#<configuration-name>`.
 
+### Kimi reviewer rollout
+
+The managed reviewer workflow lives at `github/workflows/kimi-review.yml`. The
+rollout script targets owned, non-archived, non-empty source repositories,
+stores `KIMI_API_KEY` as a repository secret, and opens one focused PR per
+repository.
+
+Authenticate the Nix-managed GitHub CLI and preview the scope first:
+
+```shell
+gh auth login --hostname github.com
+./scripts/rollout-kimi-reviewer --dry-run
+```
+
+For the live rollout, put the Kimi key in the current shell without adding it
+to shell history, then run the script:
+
+```shell
+read -rsp "Kimi API key: " KIMI_API_KEY
+echo
+export KIMI_API_KEY
+./scripts/rollout-kimi-reviewer
+unset KIMI_API_KEY
+```
+
+The first live run creates the workflow PRs without disabling Copilot review.
+After those PRs merge, rerun the same command. Repositories whose Kimi workflow
+is active then have only the `copilot_code_review` rule removed from their
+repository-owned rulesets; all other rules and ruleset fields are preserved.
+
+The workflow intentionally skips fork and Dependabot pull requests because
+GitHub does not make repository secrets available to those runs. Kimi is a
+third-party, GitHub-uncertified action, so pull-request diffs and repository code
+are sent to Moonshot AI. Its agent automatically approves tool use inside the
+ephemeral runner, which is why automatic runs are limited to same-repository
+branches and commands are limited to trusted collaborators. The action is pinned
+to an immutable commit rather than a mutable branch; its relevant event, clone,
+and agent-execution paths were inspected as part of this rollout.
+
 
     

@@ -1,0 +1,290 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(cd "$script_dir/.." && pwd)"
+workflow_template="$repo_root/github/workflows/kimi-review.yml"
+pr_body_template="$repo_root/github/kimi-reviewer-pr.md"
+workflow_path=".github/workflows/kimi-review.yml"
+rollout_branch="chore/kimi-reviewer"
+rollout_title="chore: replace Copilot reviewer with Kimi"
+
+dry_run=false
+owner=""
+requested_repos=()
+
+usage() {
+  cat <<'EOF'
+Usage: ./scripts/rollout-kimi-reviewer [options]
+
+Roll out the managed Kimi reviewer workflow to owned, non-archived, non-empty,
+non-fork repositories. Each repository receives its own KIMI_API_KEY secret and
+a focused pull request. Existing repository-owned Copilot review rules remain in
+place until the Kimi workflow is merged; rerunning the script then removes only
+the copilot_code_review rule from those rulesets.
+
+Options:
+  --dry-run          List the repositories and intended changes without writing
+  --owner LOGIN      GitHub owner to target (defaults to the authenticated user)
+  --repo OWNER/NAME  Target one repository; may be repeated
+  -h, --help         Show this help
+
+Environment:
+  KIMI_API_KEY       Required unless --dry-run; stored as a repository secret
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run)
+      dry_run=true
+      shift
+      ;;
+    --owner)
+      owner="${2:-}"
+      shift 2
+      ;;
+    --repo)
+      requested_repos+=("${2:-}")
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+done
+
+for command_name in gh jq base64; do
+  if ! command -v "$command_name" >/dev/null 2>&1; then
+    echo "Required command is unavailable: $command_name" >&2
+    echo "Run this script from the Nix-managed dotfiles shell." >&2
+    exit 1
+  fi
+done
+
+if [[ ! -f "$workflow_template" || ! -f "$pr_body_template" ]]; then
+  echo "Run this script from a complete dotfiles checkout." >&2
+  exit 1
+fi
+
+if ! gh auth status --hostname github.com >/dev/null 2>&1; then
+  echo "GitHub CLI is not authenticated. Run: gh auth login --hostname github.com" >&2
+  exit 1
+fi
+
+if [[ -z "$owner" ]]; then
+  owner="$(gh api user --jq .login)"
+fi
+
+if [[ "$dry_run" == false && -z "${KIMI_API_KEY:-}" ]]; then
+  echo "KIMI_API_KEY is required for a live rollout." >&2
+  echo "Export it in the current shell, then rerun this command." >&2
+  exit 1
+fi
+
+template_content="$(<"$workflow_template")"
+workflow_content_base64="$(base64 < "$workflow_template" | tr -d '\n')"
+
+disable_copilot_rules() {
+  local repository="$1"
+  local ruleset_ids ruleset_id ruleset_json update_payload
+
+  if ! ruleset_ids="$(
+    gh api --paginate "repos/$repository/rulesets" \
+      --jq '.[] | select(.source_type == "Repository") | .id'
+  )"; then
+    echo "  failed to list repository rulesets" >&2
+    return 1
+  fi
+
+  while IFS= read -r ruleset_id; do
+    [[ -n "$ruleset_id" ]] || continue
+    if ! ruleset_json="$(
+      gh api "repos/$repository/rulesets/$ruleset_id"
+    )"; then
+      echo "  failed to read ruleset $ruleset_id" >&2
+      return 1
+    fi
+
+    if ! jq -e 'any(.rules[]?; .type == "copilot_code_review")' \
+      >/dev/null <<<"$ruleset_json"; then
+      continue
+    fi
+
+    if [[ "$dry_run" == true ]]; then
+      echo "  would remove Copilot review from ruleset $ruleset_id"
+      continue
+    fi
+
+    update_payload="$(
+      jq -c '
+        {
+          name,
+          target,
+          enforcement,
+          bypass_actors,
+          conditions,
+          rules: [.rules[]? | select(.type != "copilot_code_review")]
+        }
+        | with_entries(select(.value != null))
+      ' <<<"$ruleset_json"
+    )"
+
+    if ! printf '%s' "$update_payload" | \
+      gh api --method PUT "repos/$repository/rulesets/$ruleset_id" \
+        --input - >/dev/null; then
+      echo "  failed to remove Copilot review from ruleset $ruleset_id" >&2
+      return 1
+    fi
+    echo "  removed Copilot review from ruleset $ruleset_id"
+  done <<<"$ruleset_ids"
+}
+
+default_branch_for() {
+  gh repo view "$1" --json defaultBranchRef --jq '.defaultBranchRef.name'
+}
+
+rollout_repository() {
+  local repository="$1"
+  local default_branch="$2"
+  local current_content existing_file_sha base_sha existing_pr branch_content
+  local -a content_args
+
+  echo "$repository"
+
+  if [[ "$dry_run" == true ]]; then
+    echo "  would set KIMI_API_KEY"
+  elif ! printf '%s' "$KIMI_API_KEY" | \
+    gh secret set KIMI_API_KEY --repo "$repository" >/dev/null; then
+    echo "  failed to set KIMI_API_KEY" >&2
+    return 1
+  else
+    echo "  set KIMI_API_KEY"
+  fi
+
+  current_content="$(
+    gh api "repos/$repository/contents/$workflow_path?ref=$default_branch" \
+      --jq .content 2>/dev/null | tr -d '\n' | base64 --decode 2>/dev/null || true
+  )"
+
+  if [[ "$current_content" == "$template_content" ]]; then
+    echo "  Kimi workflow is current on $default_branch"
+    disable_copilot_rules "$repository"
+    return
+  fi
+
+  if [[ "$dry_run" == true ]]; then
+    echo "  would open $rollout_branch -> $default_branch"
+    echo "  Copilot rules stay enabled until the workflow is merged"
+    return
+  fi
+
+  existing_pr="$(
+    gh pr list --repo "$repository" --state open --head "$rollout_branch" \
+      --json url --jq '.[0].url // empty'
+  )"
+  if [[ -n "$existing_pr" ]]; then
+    echo "  rollout PR already exists: $existing_pr"
+    return
+  fi
+
+  if gh api "repos/$repository/git/ref/heads/$rollout_branch" \
+    >/dev/null 2>&1; then
+    branch_content="$(
+      gh api "repos/$repository/contents/$workflow_path?ref=$rollout_branch" \
+        --jq .content 2>/dev/null | tr -d '\n' | base64 --decode 2>/dev/null || true
+    )"
+    if [[ "$branch_content" != "$template_content" ]]; then
+      echo "  branch already exists with different content: $rollout_branch" >&2
+      echo "  refusing to overwrite it" >&2
+      return 1
+    fi
+    echo "  reusing existing rollout branch"
+  else
+    base_sha="$(
+      gh api "repos/$repository/git/ref/heads/$default_branch" --jq .object.sha
+    )"
+    if ! gh api --method POST "repos/$repository/git/refs" \
+      -f "ref=refs/heads/$rollout_branch" -f "sha=$base_sha" >/dev/null; then
+      echo "  failed to create $rollout_branch" >&2
+      return 1
+    fi
+
+    existing_file_sha="$(
+      gh api "repos/$repository/contents/$workflow_path?ref=$default_branch" \
+        --jq .sha 2>/dev/null || true
+    )"
+    content_args=(
+      --method PUT
+      "repos/$repository/contents/$workflow_path"
+      -f "message=$rollout_title"
+      -f "content=$workflow_content_base64"
+      -f "branch=$rollout_branch"
+    )
+    if [[ -n "$existing_file_sha" ]]; then
+      content_args+=(-f "sha=$existing_file_sha")
+    fi
+
+    if ! gh api "${content_args[@]}" >/dev/null; then
+      echo "  failed to commit the workflow" >&2
+      return 1
+    fi
+  fi
+
+  if ! gh pr create --repo "$repository" --base "$default_branch" \
+    --head "$rollout_branch" --title "$rollout_title" \
+    --body-file "$pr_body_template"; then
+    echo "  workflow committed, but PR creation failed" >&2
+    return 1
+  fi
+}
+
+success_count=0
+failure_count=0
+repository_rows=""
+
+if [[ ${#requested_repos[@]} -gt 0 ]]; then
+  for repository in "${requested_repos[@]}"; do
+    if [[ -z "$repository" || "$repository" != */* ]]; then
+      echo "Invalid repository: $repository" >&2
+      failure_count=$((failure_count + 1))
+      continue
+    fi
+    default_branch="$(default_branch_for "$repository")"
+    if rollout_repository "$repository" "$default_branch"; then
+      success_count=$((success_count + 1))
+    else
+      failure_count=$((failure_count + 1))
+    fi
+  done
+else
+  if ! repository_rows="$(
+    gh repo list "$owner" --limit 1000 \
+      --json nameWithOwner,defaultBranchRef,isArchived,isEmpty,isFork \
+      --jq '.[]
+        | select(.isArchived == false and .isEmpty == false and .isFork == false)
+        | [.nameWithOwner, .defaultBranchRef.name]
+        | @tsv'
+  )"; then
+    echo "Failed to list repositories owned by $owner" >&2
+    exit 1
+  fi
+
+  while IFS=$'\t' read -r repository default_branch; do
+    [[ -n "$repository" && -n "$default_branch" ]] || continue
+    if rollout_repository "$repository" "$default_branch"; then
+      success_count=$((success_count + 1))
+    else
+      failure_count=$((failure_count + 1))
+    fi
+  done <<<"$repository_rows"
+fi
+
+echo "Completed: $success_count succeeded, $failure_count failed"
+[[ $failure_count -eq 0 ]]

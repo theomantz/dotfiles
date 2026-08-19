@@ -32,5 +32,6 @@
 /nvim/init.lua
 /nvim/init.lua.backup
 /nvim/lazyvim.json
+/opencode/
 /result
 /result-*

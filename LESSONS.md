@@ -1,5 +1,12 @@
 # LESSONS
 
+### 2026-08-19 - Keep OpenCode OAuth credentials out of dotfiles
+- Context: dotfiles OpenCode installation and ChatGPT subscription authentication
+- Symptom: declarative package setup and live account authentication are easy to conflate.
+- Root cause: Home Manager owns the CLI package, while OpenCode stores `/connect` credentials separately in `~/.local/share/opencode/auth.json`.
+- Fix: declare only the `opencode` package in Nix and complete ChatGPT Plus/Pro OAuth interactively after activation.
+- Prevention: never add OpenCode's live auth file or OAuth tokens to this repository.
+
 ### 2026-07-29 - Home Manager Neovim needs the LazyVim entrypoint
 - Context: dotfiles Home Manager Neovim config
 - Symptom: `~/.config/nvim/init.lua` was replaced by a Home Manager-generated file that only set provider globals, so Neovim started without loading the LazyVim config under `nvim/lua`.

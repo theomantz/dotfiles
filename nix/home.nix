@@ -59,6 +59,7 @@
 		git
 		go
 		htop
+		opencode
 		poppler
 		purescript
 		ripgrep

@@ -1,5 +1,12 @@
 # LESSONS
 
+### 2026-08-19 - Audit third-party Actions beyond their README workflow
+- Context: replacing Copilot review with the Kimi Code Review marketplace action
+- Symptom: the documented workflow checked out private repositories with a token, but the Docker action ignored that checkout and cloned the PR branch again using an unauthenticated HTTPS URL.
+- Root cause: the action's runtime behavior diverged from its setup example, and the README's private-repository claim did not cover the second clone.
+- Fix: inspect the pinned action source, remove the unused checkout steps, and pass a process-scoped Git URL rewrite so the action's internal clone uses `github.token` without persisting credentials.
+- Prevention: before rolling a third-party Action across repositories, inspect its action definition and execution path for extra network access, mutable dependencies, secret handling, and untrusted-event behavior; do not validate only the marketplace snippet.
+
 ### 2026-08-19 - Keep OpenCode OAuth credentials out of dotfiles
 - Context: dotfiles OpenCode installation and ChatGPT subscription authentication
 - Symptom: declarative package setup and live account authentication are easy to conflate.

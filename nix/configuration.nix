@@ -32,6 +32,7 @@ let
     "signal"
     "opera"
     "discord"
+    "fidelity-trader+"
     "protonvpn"
   ];
 

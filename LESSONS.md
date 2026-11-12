@@ -1,5 +1,12 @@
 # LESSONS
 
+### 2026-11-11 - Codex 0.167.0 needs the full Cargo system-library set
+- Context: dotfiles flake refresh on aarch64-darwin
+- Symptom: `darwin-rebuild switch` failed while building Codex because `aws-lc-sys` required a system AWS-LC but found only OpenSSL.
+- Root cause: nixpkgs' generic Cargo hook forces supported crates to use system libraries, while the Codex 0.167.0 derivation omitted AWS-LC, Oniguruma, SQLite, and Zstandard from `buildInputs`.
+- Fix: add the four missing libraries with a version-gated Codex overlay that becomes a no-op at 0.167.1, matching the upstream nixpkgs dependency fix.
+- Prevention: when a Rust build fails after the Cargo system-library hook runs, compare the derivation's native inputs with nixpkgs' current package definition and validate the complete build so the next missing library is not hidden by the first failure.
+
 ### 2026-08-19 - Audit third-party Actions beyond their README workflow
 - Context: replacing Copilot review with the Kimi Code Review marketplace action
 - Symptom: the documented workflow checked out private repositories with a token, but the Docker action ignored that checkout and cloned the PR branch again using an unauthenticated HTTPS URL.

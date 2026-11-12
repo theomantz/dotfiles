@@ -49,6 +49,25 @@ in
 {
 	environment.shells = with pkgs; [ zsh ];
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      # codex 0.167.0 is missing libraries required by nixpkgs' Cargo hook.
+      # Match the dependency fix included with codex 0.167.1 in nixpkgs.
+      codex =
+        if lib.versionOlder prev.codex.version "0.167.1" then
+          prev.codex.overrideAttrs (oldAttrs: {
+            buildInputs = (oldAttrs.buildInputs or [ ]) ++ [
+              final.aws-lc
+              final.oniguruma
+              final.sqlite
+              final.zstd
+            ];
+          })
+        else
+          prev.codex;
+    })
+  ];
+
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "vscode"

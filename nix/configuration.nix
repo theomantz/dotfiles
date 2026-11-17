@@ -23,6 +23,7 @@ let
     "macfuse"
     "ghostty"
     "slack"
+    "whatsapp"
     "claude"
     "chatgpt"
     "codex"

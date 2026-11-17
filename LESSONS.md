@@ -1,5 +1,12 @@
 # LESSONS
 
+### 2026-11-17 - Refresh pinned cask metadata when vendors retire old artifacts
+- Context: adding WhatsApp through the Nix-managed Homebrew cask tap
+- Symptom: the cask name resolved correctly, but Homebrew received HTTP 500 while downloading the pinned WhatsApp version.
+- Root cause: the flake pinned `homebrew-cask` six days behind current metadata, and WhatsApp no longer served that old release URL.
+- Fix: update only the `homebrew-cask` flake input and verify the pinned cask version before retrying installation.
+- Prevention: when a vendor-hosted cask artifact disappears, compare the pinned cask with the current official definition before changing package names or build settings.
+
 ### 2026-11-11 - Codex 0.167.0 needs the full Cargo system-library set
 - Context: dotfiles flake refresh on aarch64-darwin
 - Symptom: `darwin-rebuild switch` failed while building Codex because `aws-lc-sys` required a system AWS-LC but found only OpenSSL.
